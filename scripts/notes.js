@@ -2,9 +2,14 @@ var moment = require('moment');
 
 var notes = {};
 
-exports.regx = /(note|notes)/
-exports.command = function(from, command, message, channel, client) {
+exports.match = /(note|notes)/
+exports.command = function(from, message, channel, client) {
+  console.log(message)
   var response = "";
+  var tokens = message.split(" ")
+  var command = tokens.splice(0, 1).toString()
+  message = tokens.join(" ")
+
   if (command == "notes") {
     if (notes[from] && notes[from].length != 0) {
       for (var i = 0, j = notes[from].length; i < j; i++) {
@@ -23,7 +28,13 @@ exports.command = function(from, command, message, channel, client) {
     if (!notes[user])
       notes[user] = [];
     notes[user].push({from: from, time: new Date(), message: tokens.join(" ")});
-    response = "Okie dokes!"
+    var confirmations = [
+      "Okie dokes!",
+      "Done.",
+      "Saved.",
+      "Fine.",
+    ];
+    response = confirmations[Math.floor(Math.random()*confirmations.length)];
   }
   client.say(channel, response);
 }

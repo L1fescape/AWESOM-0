@@ -1,22 +1,21 @@
 var questions = [
   {
-    question: "who is going to win the super bowl next year?",
+    question: /who is going to win the super bowl next year?/,
     answer: "The New Orleans Saints."
   },
   {
-    question: "what's the best site on the internet?",
+    question: /what's the best site on the internet?/,
     answer: "tar-tar.org"
   }
 ];
 
-exports.regx = /question/
-exports.command = function(from, command, message, channel, client) {
-  var tokens = message.split(" ");
+exports.match = /question/
+exports.command = function(from, message, channel, client) {
   var question = message;
   var response = "";
 
   for (var i = 0, j = questions.length; i < j; i++) {
-    if (question == questions[i].question)
+    if (questions[i].question.test(question))
       response = questions[i].answer;
   }
 

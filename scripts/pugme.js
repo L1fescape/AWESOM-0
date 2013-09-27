@@ -3,8 +3,8 @@ var
   vsprint = require("sprintf-js").vsprintf, 
   request = require('request')
 
-exports.regx = /pugme/
-exports.command = function(from, command, message, channel, client) {
+exports.match = /pugme/
+exports.command = function(from, message, channel, client) {
   // google image search base url
   var base_url = 'https://ajax.googleapis.com/ajax/services/search/images?v=1.0&q=%s&start=%s'
   // the best search term ever
