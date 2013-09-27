@@ -58,6 +58,10 @@ var Awesom0 = {
     // check if message is directed at our bot
     if (message.split(" ")[0].indexOf(botname) == -1)
       return;
+    // remove the name of the bot from the message
+    var tokens = message.split(" ")
+    tokens.splice(0, 1)
+    message = tokens.join(" ")
     // process the message
     this.processMessage(from, channel, message);
   },
@@ -69,10 +73,6 @@ var Awesom0 = {
   },
 
   processMessage: function(from, channel, message) {
-    // remove the name of the bot from the message
-    var tokens = message.split(" ")
-    tokens.splice(0, 1)
-    message = tokens.join(" ")
     // loop through all commands checking if there's a match
     for (var i = 0, j = this.commands.length; i < j; i++) {
       if (this.commands[i].match.test(message)) {

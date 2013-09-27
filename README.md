@@ -35,7 +35,7 @@ var
 
   channels = [<#channel>, <#channel>],
   botname = "AWESOM-0",
-  server = '<server addr>',
+  server = '<server addr>';
 
 exports.debug = debug
 exports.commands = commands
