@@ -2,7 +2,7 @@ var moment = require('moment');
 
 var notes = {};
 
-exports.match = /(note|notes)/
+exports.match = /(note|notes)/i
 exports.command = function(from, message, channel, client) {
   var response = "";
   var command = message.split(" ").splice(0, 1).toString()

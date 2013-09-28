@@ -3,7 +3,7 @@ var
   vsprint = require("sprintf-js").vsprintf, 
   request = require('request')
 
-exports.match = /(image me|imageme)/
+exports.match = /(image me|imageme)/i
 exports.command = function(from, message, channel, client) {
   // remove the matched command
   message = message.replace(exports.match, "");

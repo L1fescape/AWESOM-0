@@ -9,7 +9,7 @@ var questions = [
   }
 ];
 
-exports.match = /question/
+exports.match = /question/i
 exports.command = function(from, message, channel, client) {
   message = message.replace(exports.match, "");
   var response = "";

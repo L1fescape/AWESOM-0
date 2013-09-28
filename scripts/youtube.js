@@ -3,7 +3,7 @@ var
   vsprint = require("sprintf-js").vsprintf, 
   request = require('request')
 
-exports.match = /(youtube|yt)/
+exports.match = /(youtube|yt)/i
 exports.command = function(from, message, channel, client) {
   var query = message.replace(exports.match, "")
   // google image search base url

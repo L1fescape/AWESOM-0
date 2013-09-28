@@ -1,4 +1,4 @@
-exports.match = /(what are )?the (three |3 )?(rules|laws)/
+exports.match = /(what are )?the (three |3 )?(rules|laws)/i
 exports.command = function(from, message, channel, client) {
   var response = "";
   var rules = [

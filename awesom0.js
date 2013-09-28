@@ -1,16 +1,9 @@
 var 
   // libraries
   irc = require('irc'),
-  vsprint = require("sprintf-js").vsprintf, 
-  request = require('request'),
 
   // import settings
   settings = require("./settings"),
-
-  // irc variables
-  channels = settings.channels,
-  botname = settings.botname,
-  server = settings.server,
 
   // debug
   debug = settings.debug;
@@ -21,14 +14,14 @@ var Awesom0 = {
     // array to store commands
     this.commands = [];
     // create a new client 
-    this.client = new irc.Client(server, botname, {
-      channels: channels,
+    this.client = new irc.Client(settings.server, settings.botname, {
+      channels: settings.channels,
     });
     // loop through all scripts enabled in settings, import them and storing them
     // in the commands array
-    for (var i = 0, j = settings.commands.length; i < j; i++) {
-      var file = settings.commands[i];
-      var script = require("./scripts/" + file);
+    for (var i = 0, j = settings.commands.length, file, script; i < j; i++) {
+      file = settings.commands[i];
+      script = require("./scripts/" + file);
       this.commands.push({ match: script.match, command: script.command });
     }
     // bind all events
@@ -53,7 +46,7 @@ var Awesom0 = {
   onmessage: function(from, channel, message) {
     console.log(from + ' => ' + channel + ': ' + message);
     // check if message is directed at our bot
-    if (message.split(" ")[0].indexOf(botname) == -1)
+    if (message.split(" ")[0].indexOf(settings.botname) == -1)
       return;
     // remove the name of the bot from the message
     var tokens = message.split(" ")
