@@ -11,6 +11,7 @@ var questions = [
 
 exports.match = /question/
 exports.command = function(from, message, channel, client) {
+  message = message.replace(exports.match, "");
   var response = "";
 
   for (var i = 0, j = questions.length; i < j; i++) {
@@ -20,6 +21,8 @@ exports.command = function(from, message, channel, client) {
 
   if (response)
     client.say(channel, response);
-  else
+  else {
+    message = message.replace(new RegExp(" ", 'g'), "%20");
     client.say(channel, "http://lmgtfy.com/?q="+message);
+  }
 }
