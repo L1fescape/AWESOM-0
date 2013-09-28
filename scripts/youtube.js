@@ -5,10 +5,7 @@ var
 
 exports.match = /(youtube|yt)/
 exports.command = function(from, message, channel, client) {
-  var tokens = message.split(" ")
-  tokens.splice(0, 1)
-  var query = tokens.join(" ")
-  
+  var query = message.replace(exports.match, "")
   // google image search base url
   var base_url = 'https://gdata.youtube.com/feeds/api/videos?q=%s&orderby=viewCount&v=2&max-results=10&alt=json'
   // sub in our query and pagination start and make the request 

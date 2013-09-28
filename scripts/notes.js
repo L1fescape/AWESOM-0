@@ -4,11 +4,9 @@ var notes = {};
 
 exports.match = /(note|notes)/
 exports.command = function(from, message, channel, client) {
-  console.log(message)
   var response = "";
-  var tokens = message.split(" ")
-  var command = tokens.splice(0, 1).toString()
-  message = tokens.join(" ")
+  var command = message.split(" ").splice(0, 1).toString()
+  message = message.replace(exports.match, "")
 
   if (command == "notes") {
     if (notes[from] && notes[from].length != 0) {

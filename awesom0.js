@@ -17,11 +17,8 @@ var
 
 
 var Awesom0 = {
-  commands: [],
-  client: {},
-  
   init: function() {
-    // array of commands
+    // array to store commands
     this.commands = [];
     // create a new client 
     this.client = new irc.Client(server, botname, {
