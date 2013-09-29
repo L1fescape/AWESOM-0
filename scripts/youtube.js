@@ -25,3 +25,4 @@ exports.command = function(from, message, channel, client) {
     }
   })
 };
+exports.usage = "youtube <query> - Seach youtube for a video"

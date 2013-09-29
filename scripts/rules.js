@@ -11,3 +11,4 @@ exports.command = function(from, message, channel, client) {
   }
   client.say(channel, response);
 }
+exports.usage = "the rules - Print the rules"

@@ -25,4 +25,5 @@ exports.command = function(from, message, channel, client) {
       client.say(channel, response);
     }
   })
-}
+};
+exports.usage = "image me <term> - Search google for images of <term>"

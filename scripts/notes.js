@@ -36,3 +36,4 @@ exports.command = function(from, message, channel, client) {
   }
   client.say(channel, response);
 }
+exports.usage = "notes - Display notes left for you. \nnote <user> <message> - Leave a note for a user"

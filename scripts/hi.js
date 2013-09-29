@@ -9,4 +9,5 @@ exports.command = function(from, message, channel, client) {
   ];
   var response = greetings[Math.floor(Math.random()*greetings.length)];
   client.say(channel, response);
-}
+};
+exports.usage = "hi - Send greetings"

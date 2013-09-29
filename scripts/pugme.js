@@ -3,7 +3,7 @@ var
   vsprint = require("sprintf-js").vsprintf, 
   request = require('request')
 
-exports.match = /pugme/i
+exports.match = /(pugme|pug me)/i
 exports.command = function(from, message, channel, client) {
   // google image search base url
   var base_url = 'https://ajax.googleapis.com/ajax/services/search/images?v=1.0&q=%s&start=%s'
@@ -24,3 +24,4 @@ exports.command = function(from, message, channel, client) {
     }
   })
 }
+exports.usage = "pugme - Receive a pug"

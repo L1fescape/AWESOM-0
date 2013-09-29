@@ -27,7 +27,7 @@ npm install
 
 Create a file called <code>settings.js</code> with the following contents:
 
-```
+```js
 var
 
   commands = ["hi", "calendar", "pugme", "question", "notes", "catme"],
@@ -35,13 +35,16 @@ var
 
   channels = [<#channel>, <#channel>],
   botname = "AWESOM-0",
-  server = '<server addr>';
+  server = '<server addr>',
+
+  help = "" // leave blank for no help message
 
 exports.debug = debug
 exports.commands = commands
 exports.channels = channels
 exports.server = server
 exports.botname = botname
+exports.help = help
 ```
 
 Commands can be enabled and disabled by adding or removing them from the <code>commands</code> array.

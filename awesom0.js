@@ -19,10 +19,9 @@ var Awesom0 = {
     });
     // loop through all scripts enabled in settings, import them and storing them
     // in the commands array
-    for (var i = 0, j = settings.commands.length, file, script; i < j; i++) {
-      file = settings.commands[i];
+    for (var i = 0, file, script; file = settings.commands[i]; i++) {
       script = require("./scripts/" + file);
-      this.commands.push({ match: script.match, command: script.command });
+      this.commands.push({ match: script.match, command: script.command, usage: script.usage });
     }
     // bind all events
     this.client.addListener('connect', this.onconnect.bind(this));
@@ -44,7 +43,8 @@ var Awesom0 = {
   },
 
   onmessage: function(from, channel, message) {
-    console.log(from + ' => ' + channel + ': ' + message);
+    if (debug)
+      console.log(from + ' => ' + channel + ': ' + message);
     // check if message is directed at our bot
     if (message.split(" ")[0].indexOf(settings.botname) == -1)
       return;
@@ -57,12 +57,17 @@ var Awesom0 = {
   },
 
   onpm: function(from, message) {
-    console.log(from + ' => pm: ' + message);
+    if (debug)
+      console.log(from + ' => pm: ' + message);
     // process the message
     this.processMessage(from, from, message);
   },
 
   processMessage: function(from, channel, message) {
+    if (/^help$/i.test(message)) {
+      this.printHelp(channel);
+      return;
+    }
     // loop through all commands checking if there's a match
     for (var i = 0, j = this.commands.length; i < j; i++) {
       if (this.commands[i].match.test(message)) {
@@ -73,7 +78,19 @@ var Awesom0 = {
 
   onerror: function(error) {
     console.log("Error:", error);
+  },
+
+  printHelp: function(channel) {
+    var response = settings.help;
+    response += "Here is a list of my available commands:\n";
+    // loop through all commands and print their help
+    for (var i = 0, j = this.commands.length; i < j; i++) {
+      response += this.commands[i].usage + "\n";
+    }
+
+    this.client.say(channel, response);
   }
+
 };
 
 // create and start the bot

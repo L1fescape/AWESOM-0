@@ -26,3 +26,5 @@ exports.command = function(from, message, channel, client) {
     client.say(channel, "http://lmgtfy.com/?q="+message);
   }
 }
+
+exports.usage = "question <question> - Ask a question"
