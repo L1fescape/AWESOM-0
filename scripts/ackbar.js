@@ -27,7 +27,7 @@ var tarps = [
   "http://i.imgur.com/5h2RptE.jpg"
 ];
 
-exports.match = /it'?s a (trap|tarp)\b|/i
+exports.match = /it'?s a (trap|tarp)/i
 exports.command = function(from, message, channel, client) {
   if (/tarp/i.test(message)) {
     client.say(channel, tarps[Math.floor(Math.random()*tarps.length)]);

@@ -3,25 +3,30 @@ var
   vsprint = require("sprintf-js").vsprintf, 
   request = require('request')
 
-exports.match = /(pugme|pug me)/i
+exports.match = /(pugme|pug me|pugbomb|pug bomb)/i
 exports.command = function(from, message, channel, client) {
-  // google image search base url
-  var base_url = 'https://ajax.googleapis.com/ajax/services/search/images?v=1.0&q=%s&start=%s'
-  // the best search term ever
-  var query = 'pug'
-  // google paginates their results, so let's pick a random result page to pull a pug from
-  var start = Math.round(Math.random()*20)
-  // sub in our query and pagination start and make the request 
-  var url = vsprint(base_url, [query, start])
-  // make the request
-  request((url), function (error, response, body) {
-    if (!error && response.statusCode == 200) {
-      // grab the actual search results out of the response
-      var pug_results = JSON.parse(body)['responseData']['results']
-      // google returns 4 results per page. pick a random result and grab the image url from it
-      response = pug_results[Math.round(Math.random()*3)]['url']
-      client.say(channel, response);
-    }
-  })
+  if (/(pugme|pug me)/i.test(message)) {
+    var url = 'http://pugme.herokuapp.com/random'
+    request(url, function (error, response, body) {
+      if (!error && response.statusCode == 200) {
+        var response = JSON.parse(body)['pug']
+        client.say(channel, response);
+      }
+    })
+  }
+  else {
+    var count = 20;
+    var url = 'http://pugme.herokuapp.com/bomb?count=' + count
+    request(url, function (error, response, body) {
+      if (!error && response.statusCode == 200) {
+        var pugs = JSON.parse(body)['pugs']
+        var response = "";
+        for (var i = 0, j = pugs.length; i < j; i++) {
+          response += pugs[i] + "\n";
+        }
+        client.say(channel, response);
+      }
+    })
+  }
 }
 exports.usage = "pugme - Receive a pug"
