@@ -81,7 +81,7 @@ var Awesom0 = {
   },
 
   printHelp: function(channel) {
-    var response = settings.help;
+    var response = (typeof settings.help === 'undefined') ? "" : settings.help;
     response += "Here is a list of my available commands:\n";
     // loop through all commands and print their help
     for (var i = 0, j = this.commands.length; i < j; i++) {
