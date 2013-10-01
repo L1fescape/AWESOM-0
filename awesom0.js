@@ -27,7 +27,6 @@ var Awesom0 = {
     this.client.addListener('connect', this.onconnect.bind(this));
     this.client.addListener('kick', this.onkick.bind(this));
     this.client.addListener('message', this.onmessage.bind(this));
-    this.client.addListener('pm', this.onpm.bind(this));
     this.client.addListener('error', this.onerror.bind(this));
   },
 
@@ -57,7 +56,14 @@ var Awesom0 = {
 
   onmessage: function(from, channel, message) {
     if (settings.debug)
-      console.log(from + ' => ' + channel + ': ' + message);
+      console.log('message from', from, 'via', channel, '=>', message);
+
+    // check if pm
+    if (channel == settings.botname) {
+      this.processMessage(from, from, message);
+      return;
+    }
+
     // check if message is directed at our bot
     if (message.split(" ")[0].indexOf(settings.botname) == -1)
       return;
@@ -67,13 +73,6 @@ var Awesom0 = {
     message = tokens.join(" ")
     // process the message
     this.processMessage(from, channel, message);
-  },
-
-  onpm: function(from, message) {
-    if (settings.debug)
-      console.log(from + ' => pm: ' + message);
-    // process the message
-    this.processMessage(from, from, message);
   },
 
   processMessage: function(from, channel, message) {
