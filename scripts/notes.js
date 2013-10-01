@@ -2,38 +2,41 @@ var moment = require('moment');
 
 var notes = {};
 
-exports.match = /(note|notes)/i
-exports.command = function(from, message, channel, client) {
-  var response = "";
-  var command = message.split(" ").splice(0, 1).toString()
-  message = message.replace(exports.match, "")
+module.exports = function(bot) {
 
-  if (command == "notes") {
-    if (notes[from] && notes[from].length != 0) {
-      for (var i = 0, j = notes[from].length; i < j; i++) {
-        var note = notes[from][i];
-        response += note.from + " @ " + moment(note.time).fromNow() + ": " + note.message + "\n";
+
+  bot.respond(/^notes$/i, "notes - Display notes left for you", function(msg) {
+    var response = "";
+    var user = msg.from;
+    if (notes[user] && notes[user].length) {
+      for (var i = 0, note; note = notes[user][i]; i++) {
+        response += note.from + " @ " + moment(note.time).fromNow() + ": " + note.msg + "\n";
       }
-      notes[from] = [];
+      notes[user] = [];
     }
-    else {
-      response = "No notes.";
-    }
-  }
-  else if (command == "note") {
-    var tokens = message.split(" ");
+    else 
+      response = "No new notes.";
+
+    bot.client.say(msg.channel, response);
+  });
+
+
+  bot.respond(/^note (.*)?/i, "note <user> <message> - Leave a note for a user", function(msg) {
+    var tokens = msg.match[1].split(" ");
     var user = tokens.splice(0, 1).toString();
     if (!notes[user])
       notes[user] = [];
-    notes[user].push({from: from, time: new Date(), message: tokens.join(" ")});
+    notes[user].push({from: msg.from, time: new Date(), msg: tokens.join(" ")});
     var confirmations = [
       "Okie dokes!",
       "Done.",
       "Saved.",
       "Fine.",
+      "Got it!"
     ];
     response = confirmations[Math.floor(Math.random()*confirmations.length)];
-  }
-  client.say(channel, response);
+    bot.client.say(msg.channel, response);
+  });
+
+
 }
-exports.usage = "notes - Display notes left for you. \nnote <user> <message> - Leave a note for a user"

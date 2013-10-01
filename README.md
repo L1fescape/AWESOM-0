@@ -9,7 +9,7 @@ Meet AWESOM-0, you're friendly neighborhood irc bot! Similar to [Hubot](http://h
 L1fescape: AWESOM-0 hi
 AWESOM-0: Hi L1fescape!
 
-L1fescape: AWESOM-0 catme
+L1fescape: AWESOM-0 image me cats
 AWESOM-0: http://www.rachelkasa.com/wp-content/uploads/2011/10/kitten.jpg
 
 L1fescape: AWESOM-0 note Bjorn totally lame.
@@ -30,14 +30,14 @@ Create a file called <code>settings.js</code> with the following contents:
 ```js
 var
 
-  commands = ["hi", "calendar", "pugme", "question", "notes", "catme"],
+  commands = ["hi", "ackbar", "imageme", "notes", "pugme", "question", "rules", "youtube"],
   debug = true,
 
   channels = [<#channel>, <#channel>],
   botname = "AWESOM-0",
   server = '<server addr>',
 
-  help = "" // leave blank for no help message
+  help = "Hi, I'm " + botname + ".", // leave blank for no help message
 
 exports.debug = debug
 exports.commands = commands

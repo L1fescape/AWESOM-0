@@ -9,22 +9,24 @@ var questions = [
   }
 ];
 
-exports.match = /question/i
-exports.command = function(from, message, channel, client) {
-  message = message.replace(exports.match, "");
-  var response = "";
 
-  for (var i = 0, j = questions.length; i < j; i++) {
-    if (questions[i].q.test(message))
-      response = questions[i].a;
-  }
+module.exports = function(bot) {
 
-  if (response)
-    client.say(channel, response);
-  else {
-    message = message.replace(new RegExp(" ", 'g'), "%20");
-    client.say(channel, "http://lmgtfy.com/?q="+message);
-  }
-}
 
-exports.usage = "question <question> - Ask a question"
+  bot.respond(/question/i, "question <question> - Ask a question", function(msg) {
+    var response = "";
+    for (var i = 0, j = questions.length; i < j; i++) {
+      if (questions[i].q.test(msg.message))
+        response = questions[i].a;
+    }
+
+    if (response)
+      bot.client.say(msg.channel, response);
+    else {
+      var message = msg.message.replace(new RegExp(" ", 'g'), "%20");
+      bot.client.say(msg.channel, "http://lmgtfy.com/?q="+message);
+    }
+  });
+
+
+};

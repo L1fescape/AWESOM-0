@@ -3,10 +3,7 @@ var
   irc = require('irc'),
 
   // import settings
-  settings = require("./settings"),
-
-  // debug
-  debug = settings.debug;
+  settings = require("./settings");
 
 
 var Awesom0 = {
@@ -16,12 +13,15 @@ var Awesom0 = {
     // create a new client 
     this.client = new irc.Client(settings.server, settings.botname, {
       channels: settings.channels,
+      port: settings.port || 6667,
+      showErrors: settings.debug || false,
+      userName: settings.userName || 'awesom0',
+      realName: settings.realName || 'AWESOM-0'
     });
     // loop through all scripts enabled in settings, import them and storing them
     // in the commands array
-    for (var i = 0, file, script; file = settings.commands[i]; i++) {
-      script = require("./scripts/" + file);
-      this.commands.push({ match: script.match, command: script.command, usage: script.usage });
+    for (var i = 0, file; file = settings.commands[i]; i++) {
+      require("./scripts/" + file)(this);
     }
     // bind all events
     this.client.addListener('connect', this.onconnect.bind(this));
@@ -31,8 +31,21 @@ var Awesom0 = {
     this.client.addListener('error', this.onerror.bind(this));
   },
 
+  // scripts call this method to register their commands, callbacks, and usage
+  respond: function(match, usage, callback) {
+    // if usage is a function, then it's probably supposed to be the callback
+    // and there isn't a usage defined
+    if (typeof usage == 'function') {
+      callback = usage;
+      usage = null;
+    }
+    this.commands.push({ match: match, command: callback, usage: usage });
+  },
+
   onconnect: function() {
-    console.log("connect");
+    var opt = this.client.opt;
+    if (settings.debug)
+      console.log("Connected to", opt.server, "port", opt.port, "on channels", opt.channels, "as", opt.nick);
   },
 
   onkick: function(channel, kickedUser, kickedBy) {
@@ -43,7 +56,7 @@ var Awesom0 = {
   },
 
   onmessage: function(from, channel, message) {
-    if (debug)
+    if (settings.debug)
       console.log(from + ' => ' + channel + ': ' + message);
     // check if message is directed at our bot
     if (message.split(" ")[0].indexOf(settings.botname) == -1)
@@ -57,7 +70,7 @@ var Awesom0 = {
   },
 
   onpm: function(from, message) {
-    if (debug)
+    if (settings.debug)
       console.log(from + ' => pm: ' + message);
     // process the message
     this.processMessage(from, from, message);
@@ -65,30 +78,39 @@ var Awesom0 = {
 
   processMessage: function(from, channel, message) {
     if (/^help$/i.test(message)) {
-      this.printHelp(channel);
+      this.printHelp(channel, from);
       return;
     }
     // loop through all commands checking if there's a match
-    for (var i = 0, j = this.commands.length; i < j; i++) {
-      if (this.commands[i].match.test(message)) {
-        this.commands[i].command(from, message, channel, this.client);
+    for (var i = 0, match, j = this.commands.length; i < j; i++) {
+      match = message.match(this.commands[i]['match']);
+      if (match && match.length) {
+        var msg = {
+          match: match,
+          from: from,
+          message: message,
+          channel: channel
+        };
+        this.commands[i].command(msg);
       }
     }
   },
 
   onerror: function(error) {
-    console.log("Error:", error);
+    if (settings.debug)
+      console.log("Error:", error);
   },
 
-  printHelp: function(channel) {
+  printHelp: function(channel, from) {
     var response = (typeof settings.help === 'undefined') ? "" : settings.help;
     response += "Here is a list of my available commands:\n";
-    // loop through all commands and print their help
-    for (var i = 0, j = this.commands.length; i < j; i++) {
-      response += this.commands[i].usage + "\n";
+    // loop through all commands and print their help, if it's been defined
+    for (var i = 0, command; command = this.commands[i]; i++) {
+      if (typeof command.usage !== 'undefined' && command.usage != null)
+        response += command.usage + "\n";
     }
 
-    this.client.say(channel, response);
+    this.client.say(from, response);
   }
 
 };

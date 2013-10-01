@@ -27,12 +27,16 @@ var tarps = [
   "http://i.imgur.com/5h2RptE.jpg"
 ];
 
-exports.match = /it'?s a (trap|tarp)/i
-exports.command = function(from, message, channel, client) {
-  if (/tarp/i.test(message)) {
-    client.say(channel, tarps[Math.floor(Math.random()*tarps.length)]);
-  }
-  else 
-    client.say(channel, ackbars[Math.floor(Math.random()*ackbars.length)]);
+module.exports = function(bot) {
+
+
+  bot.respond(/it'?s a trap/i, "it's a trap - Display an Admiral Ackbar piece of wonder", function(msg) {
+    bot.client.say(msg.channel, ackbars[Math.floor(Math.random()*ackbars.length)]);
+  });
+
+  bot.respond(/it'?s a tarp/i, function(msg) {
+    bot.client.say(msg.channel, tarps[Math.floor(Math.random()*tarps.length)]);
+  });
+
+
 };
-exports.usage = "it's a trap - Display an Admiral Ackbar piece of wonder" 
