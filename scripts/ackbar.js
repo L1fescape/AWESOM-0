@@ -17,7 +17,8 @@ var ackbars = [
   "http://24.media.tumblr.com/e4255aa10151ebddf57555dfa3fc8779/tumblr_mho9v9y5hE1r8gxxfo1_500.jpg",
   "http://farm2.staticflickr.com/1440/5170210261_fddb4c480c_z.jpg",
   "http://fashionablygeek.com/wp-content/uploads/2010/02/its-a-mouse-trap.jpg?cb5e28",
-  "http://31.media.tumblr.com/tumblr_lmn8d1xFXN1qjs7yio1_500.jpg"
+  "http://31.media.tumblr.com/tumblr_lmn8d1xFXN1qjs7yio1_500.jpg",
+  "http://i.imgur.com/EFJlvqh.png"
 ]
 
 var tarps = [
