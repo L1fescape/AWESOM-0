@@ -50,8 +50,8 @@ var Awesom0 = {
   onkick: function(channel, kickedUser, kickedBy) {
     // wait a second so the bot can reconnect before sending response
     setTimeout(function() {
-      Awesom0.client.say(channel, "Fuck you " + kickedBy + "!");
-    }, 1000);
+      this.client.say(channel, "Fuck you " + kickedBy + "!");
+    }.bind(this), 1000);
   },
 
   onmessage: function(from, channel, message) {
