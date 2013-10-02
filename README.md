@@ -55,6 +55,12 @@ Commands can be enabled and disabled by adding or removing them from the <code>c
 node awesom0.js
 ```
 
+With [forever](https://github.com/nodejitsu/forever) (note you'll need to install forever globally):
+
+```
+forever start awesom0.js
+```
+
 ## Writing Scripts
 
 On init, the array of commands we've chosen to enable in `settings.js` is looped through by AWSOM-0 and each script is [imported](https://github.com/L1fescape/AWESOM-0/blob/master/awesom0.js#L24). The AWESOM-0 instance is also passed in to each script. This is so that each script can register what regular expression AWESOM-0 should listen to. 
