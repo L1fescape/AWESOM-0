@@ -80,29 +80,11 @@ For a good example of all of this, check out the [hi script](https://github.com/
 
 If you have a feature you'd like to add or a gesture you'd like supported, submit an issue through GitHub or better yet, a pull request!
 
+## Acknowledgements
+
+- [Hubot](http://hubot.github.com/) - A TON of inspiration. AWESOM-0 initially [did things much differently](https://github.com/L1fescape/AWESOM-0/blob/43b84d4dd9edbf31a8f6de8071300410f869a556/awesom0.js#L56). Just looking at the format of [Hubot Scripts](https://github.com/github/hubot-scripts) got me thinking of how to get something like that to work.
+- [Node IRC](https://github.com/martynsmith/node-irc) - Super simple, awesome npm package that made writing this bot a breeze. Thanks!
+
 ## License
 
 MIT License • © [Andrew Kennedy](https://github.com/L1fescape)
-
-    var query = msg.match[2];
-    // google image search base url
-    var base_url = 'https://gdata.youtube.com/feeds/api/videos?q=%s&orderby=viewCount&v=2&max-results=10&alt=json'
-    // sub in our query and pagination start and make the request 
-    var url = vsprint(base_url, [query])
-    // make the request
-    request(url, function (error, response, body) {
-      if (!error && response.statusCode == 200) {
-        // grab the actual search results out of the response
-        var results = JSON.parse(body)
-        var entries = results.feed.entry;
-        if (!entries || !entries.length) {
-          client.say(channel, "No results.");
-          return;
-        }
-        var video = entries[Math.round(Math.random()*entries.length)];
-        bot.client.say(msg.channel, video.link[0].href);
-      }
-    })
-  });
-
-};
