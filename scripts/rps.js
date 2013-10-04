@@ -65,7 +65,6 @@ module.exports = function (bot) {
   });
 
   bot.respond(/^rps play (..) (r.*|p.*|s.*)/, "rps - Play with a person", function (msg) {
-      console.log(games);
       var game, participant, opposition,
         gameName = msg.match[1],
         uthrow = msg.match[2];
@@ -102,6 +101,9 @@ module.exports = function (bot) {
 
       if (opposition.throw) {
         bot.client.say(msg.channel, "Check the original channel for the results!");
+        bot.client.say(game.channel, irc.colors.wrap("dark_green",
+          "Rock Paper Scissors battle: " + game.player.name
+            + " challenges " + game.opponent.name));
         bot.client.say(game.channel, irc.colors.wrap("white",
           game.player.name + " throws " + names[game.player.throw]));
         bot.client.say(game.channel, irc.colors.wrap("black",
