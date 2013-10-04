@@ -73,6 +73,7 @@ module.exports = function (bot) {
     });
   });
 
+  // Play a named game
   bot.respond(/^rps play (..) (r.*|p.*|s.*)/, "rps - Play with a person", function (msg) {
       var game, participant, opposition,
         gameName = msg.match[1],
@@ -91,6 +92,8 @@ module.exports = function (bot) {
         return;
       }
 
+      // Determine whether the game initiator (player) or recipient
+      // (opponent) has sent the message
       if (game.player.name == msg.from) {
         participant = game.player;
         opposition = game.opponent;
@@ -118,6 +121,7 @@ module.exports = function (bot) {
         bot.client.say(game.channel, irc.colors.wrap("black",
           game.opponent.name + " throws " + names[game.opponent.throw]));
 
+        // Determine winner
         if (game.player.throw == game.opponent.throw) {
             bot.client.say(game.channel, "Tied! The game is still open.");
             game.player.throw = null;
