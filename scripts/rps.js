@@ -8,15 +8,13 @@ var games = {},
 ;
 
 /**
- * Determine whether the first argument user has
- * defeated the second argument user
- * TODO is this really the only way to check this?
+ * winner is determined by comparator[attempt][challenge]
+ * returns whether attempt wins
  */
-function rpsCompare(userFor, userAgainst) {
-  return userFor == "r" && userAgainst == "s"
-    || userFor == "p" && userAgainst == "r"
-    || userFor == "s" && userAgainst == "p"
-  ;
+var comparator = {
+    "r": {"s": true, "p": false},
+    "s": {"p": true, "r": false},
+    "p": {"r": true, "s": false}
 }
 
 module.exports = function (bot) {
@@ -86,7 +84,7 @@ module.exports = function (bot) {
             irc.colors.wrap("yellow", bot.client.say(msg.channel, "We both threw "
               + names[uthrow] + ".  Try again."));
           }
-          else if (rpsCompare(uthrow, bthrow)) {
+          else if (comparator[uthrow][bthrow]) {
             bot.client.say(msg.channel, irc.colors.wrap("light_green", "Your " + names[uthrow]
               + " has defeated my " + names[bthrow]
               + ".  Well done!"));
