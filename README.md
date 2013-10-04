@@ -25,27 +25,8 @@ AWESOM-0: L1fescape @ about an hour ago: totally lame.
 npm install
 ```
 
-Create a file called <code>settings.js</code> with the following contents:
-
-```js
-var
-
-  commands = ["ackbar", "grooveshark", "hi", "imageme", "notes", "pugme", "question", "rules", "youtube"],
-  debug = true,
-
-  channels = [<#channel>, <#channel>],
-  botname = "AWESOM-0",
-  server = '<server addr>',
-
-  help = "Hi, I'm " + botname + ". "; // leave blank for no help message
-
-exports.debug = debug
-exports.commands = commands
-exports.channels = channels
-exports.server = server
-exports.botname = botname
-exports.help = help
-```
+Create a file called <code>settings.js</code> (you can copy
+from the existing <code>settings.js.sample</code>).
 
 Commands can be enabled and disabled by adding or removing them from the <code>commands</code> array.
 
