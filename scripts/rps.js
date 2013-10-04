@@ -20,7 +20,7 @@ var games = {},
 ;
 
 module.exports = function (bot) {
-  bot.respond(/^rps ([\w-]+)$/, "rps - Play rock/paper/scissors", function (msg) {
+  bot.respond(/^rps vs ([\w-]+)$/, "rps - Play rock/paper/scissors", function (msg) {
     var gameName,
       opponent = msg.match[1];
     // check whether user is on and determine what to do
@@ -48,12 +48,83 @@ module.exports = function (bot) {
       while (gameName.length !== 2 || (games.hasOwnProperty(gameName) &&
         games[gameName].initiated > (new Date).getTime() - 500000));
       games[gameName] = {
-          player: msg.from,
-          opponent: opponent,
-          initiated: (new Date).getTime()
+          player: {
+            name: msg.from,
+            "throw": null
+          },
+          opponent: {
+              name: opponent,
+              "throw": null
+          },
+          initiated: (new Date).getTime(),
+          channel: msg.channel
       };
-      bot.client.say(msg.channel, "Okay, tell me \"rps play " + gameName + "\"");
+      bot.client.say(msg.channel, "Okay, " + msg.from + " and " + opponent
+        + ", pm me \"rps play " + gameName + " (rock|paper|scissors)\"");
     });
+  });
+
+  bot.respond(/^rps play (..) (r.*|p.*|s.*)/, "rps - Play with a person", function (msg) {
+      console.log(games);
+      var game, participant, opposition,
+        gameName = msg.match[1],
+        uthrow = msg.match[2];
+      if (!games.hasOwnProperty(gameName)) {
+        bot.client.say(msg.channel, irc.colors.wrap("light_red",
+          "That rock/paper/scissors game does not exist"));
+        return;
+      }
+
+      game = games[gameName];
+
+      if (game.player.name != msg.from && game.opponent.name != msg.from) {
+        bot.client.say(msg.channel, irc.colors.wrap("light_red",
+          "You are not a participant in that game"));
+        return;
+      }
+
+      if (game.player.name == msg.from) {
+        participant = game.player;
+        opposition = game.opponent;
+      }
+      else {
+        participant = game.opponent;
+        opposition = game.player;
+      }
+
+      if (participant.throw) {
+        bot.client.say(msg.channel, irc.colors.wrap("light_red",
+          "Your throw of " + names[participant.throw] + " has already been recorded"));
+        return;
+      }
+
+      participant.throw = msg.match[2][0];
+
+      if (opposition.throw) {
+        bot.client.say(msg.channel, "Check the original channel for the results!");
+        bot.client.say(game.channel, irc.colors.wrap("white",
+          game.player.name + " throws " + names[game.player.throw]));
+        bot.client.say(game.channel, irc.colors.wrap("black",
+          game.opponent.name + " throws " + names[game.opponent.throw]));
+
+        if (game.player.throw == game.opponent.throw) {
+            bot.client.say(game.channel, "Tied! The game is still open.");
+            game.player.throw = null;
+            game.opponent.throw = null;
+            return;
+        }
+        else if (comparator[game.player.throw][game.opponent.throw]) {
+            bot.client.say(game.channel, game.player.name + " has won!");
+        }
+        else {
+            bot.client.say(game.channel, game.opponent.name + " has won!");
+        }
+        delete games[gameName];
+      }
+      else {
+        bot.client.say(msg.channel, irc.colors.wrap("light_green",
+          "Okay, I've recorded your throw.  Waiting for your opponent to respond."));
+      }
   });
 
   bot.respond(/^rps throw (r.*|p.*|s.*)/, "rps - Play with AWESOME-O", function (msg) {
