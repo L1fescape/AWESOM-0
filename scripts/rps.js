@@ -20,6 +20,15 @@ var games = {},
 ;
 
 module.exports = function (bot) {
+  bot.respond(/^rps$/, "rps - instructions", function (msg) {
+    bot.client.say(msg.channel,
+      "Rock Paper Scissors help:\n"
+      + "\"rps throw (rock|paper|scissors)\" -- play against me\n"
+      + "\"rps vs (user)\" -- initiate a game against this user \n"
+      + "\"rps play (two_char_game_id) (throw)\" -- record your throw for the game"
+    );
+  });
+
   bot.respond(/^rps vs ([\w-]+)$/, "rps - Play rock/paper/scissors", function (msg) {
     var gameName,
       opponent = msg.match[1];
