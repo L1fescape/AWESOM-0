@@ -3,19 +3,20 @@
  * or with AWESOM-0 himself
  */
 
+// keeps track of named games
 var games = {},
-  irc = require("irc")
-;
+  irc = require("irc"),
 
-/**
- * winner is determined by comparator[attempt][challenge]
- * returns whether attempt wins
- */
-var comparator = {
-    "r": {"s": true, "p": false},
-    "s": {"p": true, "r": false},
-    "p": {"r": true, "s": false}
-}
+    /**
+     * winner is determined by comparator[attempt][challenge]
+     * returns whether attempt wins
+     */
+    comparator = {
+        "r": {"s": true, "p": false},
+        "s": {"p": true, "r": false},
+        "p": {"r": true, "s": false}
+    }
+;
 
 module.exports = function (bot) {
   bot.respond(/^rps ([\w-]+)$/, "rps - Play rock/paper/scissors", function (msg) {
