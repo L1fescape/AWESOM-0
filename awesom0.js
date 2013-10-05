@@ -21,7 +21,12 @@ var Awesom0 = {
     // loop through all scripts enabled in settings, import them and storing them
     // in the commands array
     for (var i = 0, file; file = settings.commands[i]; i++) {
-      require("./scripts/" + file)(this);
+      try {
+        require("./scripts/" + file)(this);
+      }
+      catch (err) {
+        console.warn(file + " does not appear to be a valid command");
+      }
     }
     // bind all events
     this.client.addListener('connect', this.onconnect.bind(this));
