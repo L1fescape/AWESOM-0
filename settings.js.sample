@@ -1,0 +1,17 @@
+var
+
+  commands = ["ackbar", "grooveshark", "hi", "imageme", "notes", "pugme", "question", "rules", "youtube"],
+  debug = true,
+
+  channels = [<#channel>, <#channel>],
+  botname = "AWESOM-0",
+  server = '<server addr>',
+
+  help = "Hi, I'm " + botname + ". "; // leave blank for no help message
+
+exports.debug = debug
+exports.commands = commands
+exports.channels = channels
+exports.server = server
+exports.botname = botname
+exports.help = help
