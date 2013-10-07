@@ -11,7 +11,6 @@ var Awesom0 = {
   init: function() {
     // determine whether or not we should be in debug mode
     this.debug = (typeof settings.debug !== 'undefined') ? settings.debug : false;
-    console.log(this.debug)
     // array to store commands
     this.commands = [];
     // loop through all scripts enabled in settings, importing them and storing them
@@ -66,8 +65,7 @@ var Awesom0 = {
 
   onconnect: function() {
     var opt = this.client.opt;
-    if (this.debug)
-      console.log("Connected to", opt.server, "port", opt.port, "on channels", opt.channels, "as", opt.nick);
+    //console.log("Connected to", opt.server, "port", opt.port, "on channels", opt.channels, "as", opt.nick);
   },
 
   onkick: function(channel, kickedUser, kickedBy) {

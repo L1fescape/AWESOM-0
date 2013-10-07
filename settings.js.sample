@@ -1,7 +1,7 @@
 var
 
   commands = ["ackbar", "grooveshark", "hi", "imageme", "notes", "pugme", "question", "rules", "youtube"],
-  debug = true,
+  debug = false,
 
   channels = [<#channel>, <#channel>],
   botname = "AWESOM-0",
