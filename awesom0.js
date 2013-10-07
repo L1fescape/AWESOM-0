@@ -1,6 +1,7 @@
 var 
   // libraries
   irc = require('irc'),
+  chalk = require('chalk'),
 
   // import settings
   settings = require("./settings");
@@ -8,17 +9,12 @@ var
 
 var Awesom0 = {
   init: function() {
+    // determine whether or not we should be in debug mode
+    this.debug = (typeof settings.debug !== 'undefined') ? settings.debug : false;
+    console.log(this.debug)
     // array to store commands
     this.commands = [];
-    // create a new client 
-    this.client = new irc.Client(settings.server, settings.botname, {
-      channels: settings.channels,
-      port: settings.port || 6667,
-      showErrors: settings.debug || false,
-      userName: settings.userName || 'awesom0',
-      realName: settings.realName || 'AWESOM-0'
-    });
-    // loop through all scripts enabled in settings, import them and storing them
+    // loop through all scripts enabled in settings, importing them and storing them
     // in the commands array
     for (var i = 0, file; file = settings.commands[i]; i++) {
       try {
@@ -28,11 +24,33 @@ var Awesom0 = {
         console.warn(file + " does not appear to be a valid command");
       }
     }
+    // create a new client 
+    this.client = new irc.Client(settings.server, settings.botname, {
+      channels: settings.channels,
+      port: settings.port || 6667,
+      autoConnect: !this.debug,
+      showErrors: this.debug,
+      userName: settings.userName || 'awesom0',
+      realName: settings.realName || 'AWESOM-0'
+    });
     // bind all events
     this.client.addListener('connect', this.onconnect.bind(this));
     this.client.addListener('kick', this.onkick.bind(this));
     this.client.addListener('message', this.onmessage.bind(this));
     this.client.addListener('error', this.onerror.bind(this));
+    // if in debug mode, define our own say function and a function that makes
+    // testing commands easier
+    if (this.debug) {
+      this.client = {
+        say: function(channel, msg) {
+          console.log(chalk.green("Response (via " + channel + "):"), msg);
+        },
+        opt : this.client.opt
+      };
+      this.testMsg = function(msg) {
+        this.onmessage("TestUser", "#test", msg);
+      }
+    }
   },
 
   // scripts call this method to register their commands, callbacks, and usage
@@ -48,7 +66,7 @@ var Awesom0 = {
 
   onconnect: function() {
     var opt = this.client.opt;
-    if (settings.debug)
+    if (this.debug)
       console.log("Connected to", opt.server, "port", opt.port, "on channels", opt.channels, "as", opt.nick);
   },
 
@@ -60,8 +78,8 @@ var Awesom0 = {
   },
 
   onmessage: function(from, channel, message) {
-    if (settings.debug)
-      console.log('message from', from, 'via', channel, '=>', message);
+    if (this.debug)
+      console.log(chalk.yellow('Message (' + from + ' via ' + channel + '):'), message);
 
     // check if pm
     if (channel == settings.botname) {
@@ -101,8 +119,8 @@ var Awesom0 = {
   },
 
   onerror: function(error) {
-    if (settings.debug)
-      console.log("Error:", error);
+    if (this.debug)
+      console.log(chalk.red("Error: "), error);
   },
 
   printHelp: function(channel, from) {
@@ -121,3 +139,5 @@ var Awesom0 = {
 
 // create and start the bot
 Awesom0.init();
+
+module.exports = Awesom0;

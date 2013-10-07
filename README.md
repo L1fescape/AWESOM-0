@@ -1,7 +1,7 @@
 # AWESOM-0
 > Hey there have you heard about my robot friend? He's metal and small and doesn't judge me at all.
 
-Meet AWESOM-0, you're friendly neighborhood irc bot! Similar to [Hubot](http://hubot.github.com/), AWESOM-0 responds to a variety of commands that are defined in a folder called <code>scripts</code>.
+Meet AWESOM-0, you're friendly neighborhood IRC bot! Similar to [Hubot](http://hubot.github.com/), AWESOM-0 responds to a variety of commands that are defined in a folder called <code>scripts</code>.
 
 ## Examples
 
@@ -56,6 +56,39 @@ AWESOM-0 passes an object into the callback of a matched script with the followi
 - `channel`: the channel the message was sent to.
 
 For a good example of all of this, check out the [hi script](https://github.com/L1fescape/AWESOM-0/blob/master/scripts/hi.js).
+
+## Debugging
+
+If you want to test scripts without connecting to an IRC srever, you're in luck! In `settings.js` you can set the value of `debug` to true. This will display errors, show messages the irc bot receives, and will print responses triggered by vaious commands. Setting debug mode to true will also define a function called `testMsg(msg)` which is an alias for `onmessage("TestUser", "#test", msg)`. This makes testing commands a little easier as you don't need to define the user and channel a message was sent from/to every time.
+
+In order to test a script (in this case, the "it's a trap" script), do the following:
+
+```js
+$ node
+//=> 
+
+> a = require("./awesom0")
+//=>
+
+> a.printHelp()
+//=> Hi I'm AWESOM-0. Here is a list of my available commands:
+//=> hi - Send greetings
+//=> it's a trap - Display an Admiral Ackbar piece of wonder
+//=> image me <term> - Search google for images of <term>
+//=> ... more commands ...
+
+> a.testMsg("its a trap")
+//=> Message (TestUser via #test): its a trap
+
+> a.testMsg("AWESOM-0 its a trap")
+//=> Message (TestUser via #test): AWESOM-0 its a trap
+//=> Response (via #test): http://31.media.tumblr.com/tumblr_lqrrkpAqjf1qiorsyo1_500.jpg
+
+> a.onmessage("AwesomeUser", "#AwesomeChannel", "AWESOM-0 its a trap")
+//=> Message (AwesomeUser via #AwesomeChannel): AWESOM-0 its a trap
+//=> Response (via #AwesomeChannel): http://farm6.staticflickr.com/5250/5216539895_09f963f448_z.jpg
+
+```
 
 
 ## TODO
