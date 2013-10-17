@@ -13,6 +13,7 @@
     "sprintf-js": "0.0.7",
     "request": "~2.27.0",
     "moment": "~2.2.1",
-    "chalk": "~0.2.1"
+    "chalk": "~0.2.1",
+    "sandbox": "0.8.3"
   }
 }
