@@ -103,7 +103,7 @@ If you have a feature you'd like to add or a gesture you'd like supported, submi
 ## Acknowledgements
 
 - [Hubot](http://hubot.github.com/) - A TON of inspiration. AWESOM-0 initially [did things much differently](https://github.com/L1fescape/AWESOM-0/blob/43b84d4dd9edbf31a8f6de8071300410f869a556/awesom0.js#L56). Just looking at the format of [Hubot Scripts](https://github.com/github/hubot-scripts) got me thinking of how to get something like that to work.
-- [Node IRC](https://github.com/martynsmith/node-irc) - Super simple, awesome npm package that made writing this bot a breeze. Thanks!
+- [Node IRC](https://github.com/martynsmith/node-irc) - Super simple, awesome npm package that made writing this bot a breeze. Thanks @martynsmith!
 
 ## License
 

@@ -1,11 +1,11 @@
 var
 
-  commands = ["ackbar", "grooveshark", "hi", "imageme", "notes", "pugme", "question", "rules", "youtube"],
+  commands = ["ackbar", "eval", "hi", "imageme", "notes", "pugme", "question", "rules", "youtube"],
   debug = false,
 
-  channels = [<#channel>, <#channel>],
+  channels = ["<#channel>", "<#channel>"],
   botname = "AWESOM-0",
-  server = '<server addr>',
+  server = "<server addr>",
 
   help = "Hi, I'm " + botname + ". "; // leave blank for no help message
 
