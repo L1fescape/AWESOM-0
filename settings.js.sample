@@ -1,6 +1,6 @@
 var
 
-  commands = ["ackbar", "eval", "hi", "imageme", "notes", "pugme", "question", "rules", "youtube"],
+  commands = ["ackbar", "eval", "quotes", "karma", "hi", "imageme", "notes", "pugme", "question", "rules", "youtube"],
   debug = false,
 
   channels = ["<#channel>", "<#channel>"],
