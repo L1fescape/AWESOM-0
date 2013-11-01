@@ -1,7 +1,7 @@
 var quotes = {}
 
 module.exports = function(bot) {
-  bot.respond(/^(remember|quote) \w+/i, "remember quotes", function(msg) {
+  bot.respond(/^(remember|quote) \w+/i, "quote <user> [<quote>] - remember/retrieve quotes", function(msg) {
     var response
     var text = msg.message.replace(/^(remember|quote)\ /,"").split(/\ /g)
     var key = text[0]
