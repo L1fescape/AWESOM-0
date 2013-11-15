@@ -1,8 +1,17 @@
 var moment = require('moment');
 
 var notes = {};
+var seenNotes = {};
 
 module.exports = function(bot) {
+
+  bot.hear(/.*/i, function(msg) {
+    var user = msg.from.toLowerCase();
+    if (!seenNotes[user]) {
+      bot.client.say(msg.channel, msg.from + ", you have notes!");
+      seenNotes[user] = true;
+    }
+  });
 
 
   bot.respond(/^notes$/i, "notes - Display notes left for you", function(msg) {
@@ -24,9 +33,10 @@ module.exports = function(bot) {
   bot.respond(/^note (.*)?/i, "note <user> <message> - Leave a note for a user", function(msg) {
     var tokens = msg.match[1].split(" ");
     var user = tokens.splice(0, 1).toString().toLowerCase();
-    if (!notes[user])
+    if (typeof notes[user] === 'undefined')
       notes[user] = [];
     notes[user].push({from: msg.from, time: new Date(), msg: tokens.join(" ")});
+    seenNotes[user] = false; 
     var confirmations = [
       "Okie dokes!",
       "Done.",

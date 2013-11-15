@@ -13,6 +13,8 @@ var Awesom0 = {
     this.debug = (typeof settings.debug !== 'undefined') ? settings.debug : false;
     // array to store commands
     this.commands = [];
+    // array to store things to listen for
+    this.sounds = [];
     // loop through all scripts enabled in settings, importing them and storing them
     // in the commands array
     for (var i = 0, file; file = settings.commands[i]; i++) {
@@ -20,6 +22,7 @@ var Awesom0 = {
         require("./scripts/" + file)(this);
       }
       catch (err) {
+        console.warn(err);
         console.warn(file + " does not appear to be a valid command");
       }
     }
@@ -63,6 +66,14 @@ var Awesom0 = {
     this.commands.push({ match: match, command: callback, usage: usage });
   },
 
+  hear: function(match, usage, callback) {
+    if (typeof usage == 'function') {
+      callback = usage;
+      usage = null;
+    }
+    this.sounds.push({ match: match, command: callback, usage: usage });
+  },
+
   onconnect: function() {
     var opt = this.client.opt;
     //console.log("Connected to", opt.server, "port", opt.port, "on channels", opt.channels, "as", opt.nick);
@@ -79,39 +90,49 @@ var Awesom0 = {
     if (this.debug)
       console.log(chalk.yellow('Message (' + from + ' via ' + channel + '):'), message);
 
-    // check if pm
+    // check if pm. if so, set channel to nick sending the pm
     if (channel == settings.botname) {
-      this.processMessage(from, from, message);
-      return;
+      channel = from;
     }
 
-    // check if message is directed at our bot
-    if (message.split(" ")[0].indexOf(settings.botname) == -1)
-      return;
-    // remove the name of the bot from the message
-    var tokens = message.split(" ")
-    tokens.splice(0, 1)
-    message = tokens.join(" ")
-    // process the message
-    this.processMessage(from, channel, message);
-  },
-
-  processMessage: function(from, channel, message) {
     if (/^help$/i.test(message)) {
       this.printHelp(channel, from);
       return;
     }
-    // loop through all commands checking if there's a match
-    for (var i = 0, match, j = this.commands.length; i < j; i++) {
-      match = message.match(this.commands[i]['match']);
-      if (match && match.length) {
-        var msg = {
-          match: match,
-          from: from,
-          message: message,
-          channel: channel
-        };
-        this.commands[i].command(msg);
+    // check if message is directed at our bot
+    if (message.split(" ")[0].indexOf(settings.botname) > -1) {
+      // remove the name of the bot from the message
+      var tokens = message.split(" ")
+      tokens.splice(0, 1)
+      message = tokens.join(" ")
+
+      // loop through all commands checking if there's a match
+      for (var i = 0, match, j = this.commands.length; i < j; i++) {
+        match = message.match(this.commands[i]['match']);
+        if (match && match.length) {
+          var msg = {
+            match: match,
+            from: from,
+            message: message,
+            channel: channel
+          };
+          this.commands[i].command(msg);
+        }
+      }
+    }
+    else {
+      // loop through all commands checking if there's a match
+      for (var i = 0, match, j = this.sounds.length; i < j; i++) {
+        match = message.match(this.sounds[i]['match']);
+        if (match && match.length) {
+          var msg = {
+            match: match,
+            from: from,
+            message: message,
+            channel: channel
+          };
+          this.sounds[i].command(msg);
+        }
       }
     }
   },
