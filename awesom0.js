@@ -117,8 +117,7 @@ var Awesom0 = {
   },
 
   onerror: function(error) {
-    if (this.debug)
-      console.log(chalk.red("Error: "), error);
+    console.log(chalk.red("Error: "), error);
   },
 
   printHelp: function(channel, from) {
