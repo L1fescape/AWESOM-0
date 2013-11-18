@@ -7,7 +7,7 @@ module.exports = function(bot) {
 
   bot.hear(/.*/i, function(msg) {
     var user = msg.from.toLowerCase();
-    if (!seenNotes[user]) {
+    if (seenNotes[user] === false) {
       bot.client.say(msg.channel, msg.from + ", you have notes!");
       seenNotes[user] = true;
     }
