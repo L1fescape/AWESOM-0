@@ -15,6 +15,8 @@ var Awesom0 = {
     this.commands = [];
     // array to store things to listen for
     this.sounds = [];
+    // array to store events to happen onjoin
+    this.joins = [];
     // loop through all scripts enabled in settings, importing them and storing them
     // in the commands array
     for (var i = 0, file; file = settings.commands[i]; i++) {
@@ -39,6 +41,7 @@ var Awesom0 = {
     this.client.addListener('connect', this.onconnect.bind(this));
     this.client.addListener('kick', this.onkick.bind(this));
     this.client.addListener('message', this.onmessage.bind(this));
+    this.client.addListener('join', this.onjoin.bind(this));
     this.client.addListener('error', this.onerror.bind(this));
     // if in debug mode, define our own say function and a function that makes
     // testing commands easier
@@ -74,9 +77,19 @@ var Awesom0 = {
     this.sounds.push({ match: match, command: callback, usage: usage });
   },
 
+  userJoin: function(callback) {
+    this.joins.push(callback);
+  },
+
   onconnect: function() {
     var opt = this.client.opt;
     //console.log("Connected to", opt.server, "port", opt.port, "on channels", opt.channels, "as", opt.nick);
+  },
+
+  onjoin: function(channel, nick, message) {
+    for (var i = 0, j = this.joins.length; i < j; i++) {
+      this.joins[i]({channel: channel, nick: nick, message:message});
+    }
   },
 
   onkick: function(channel, kickedUser, kickedBy) {

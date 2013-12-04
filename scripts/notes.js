@@ -5,6 +5,15 @@ var seenNotes = {};
 
 module.exports = function(bot) {
 
+  bot.userJoin(function(msg) {
+    var user = msg.nick.toLowerCase();
+    if (seenNotes[user] === false) {
+      bot.client.say(msg.channel, msg.nick + ", you have notes!");
+      seenNotes[user] = true;
+    }
+  });
+
+
   bot.hear(/.*/i, function(msg) {
     var user = msg.from.toLowerCase();
     if (seenNotes[user] === false) {
@@ -49,3 +58,4 @@ module.exports = function(bot) {
 
 
 }
+
