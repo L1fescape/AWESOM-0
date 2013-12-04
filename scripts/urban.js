@@ -7,7 +7,10 @@ module.exports = function(bot) {
     var url = "http://api.urbandictionary.com/v0/define?term=" + term
     request(url, function (error, response, body) {
       var results = JSON.parse(body);
-      bot.client.say(msg.channel, results["list"][0]["definition"]);
+      if (results["list"].length == 0)
+        bot.client.say(msg.channel, "No results for " + term);
+      else
+        bot.client.say(msg.channel, results["list"][0]["definition"]);
     });
   });
 
