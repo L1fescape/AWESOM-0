@@ -9,8 +9,11 @@ module.exports = function(bot) {
       var results = JSON.parse(body);
       if (results["list"].length == 0)
         bot.client.say(msg.channel, "No results for " + term);
-      else
-        bot.client.say(msg.channel, results["list"][0]["definition"] + "\nExample: " + results["list"][0]["example"]);
+      else {
+        var definition = results["list"][0]["definition"];
+        var example = results["list"][0]["example"];
+        bot.client.say(msg.channel, definition + ((example) ? "\nExample: " + results["list"][0]["example"] : ""));
+      }
     });
   });
 
