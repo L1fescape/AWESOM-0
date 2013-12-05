@@ -10,7 +10,7 @@ module.exports = function(bot) {
       if (results["list"].length == 0)
         bot.client.say(msg.channel, "No results for " + term);
       else
-        bot.client.say(msg.channel, results["list"][0]["definition"]);
+        bot.client.say(msg.channel, results["list"][0]["definition"] + "\nExample: " + results["list"][0]["example"]);
     });
   });
 
