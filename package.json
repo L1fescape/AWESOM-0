@@ -1,7 +1,7 @@
 {
   "name": "awesom0",
   "version": "0.0.2",
-  "description": "",
+  "description": "An IRC bot that responds to custom user scripts.",
   "main": "awesom0.js",
   "scripts": {
     "test": "mocha"
