@@ -7,10 +7,9 @@ var
 var Awesom0 = {
   init: function(settings) {
     // import settings
-    if (!settings)
-      settings = require("./settings");
+    this.settings = settings || require("./settings");
     // determine whether or not we should be in debug mode
-    this.debug = (typeof settings.debug !== 'undefined') ? settings.debug : false;
+    this.debug = (typeof this.settings.debug !== 'undefined') ? this.settings.debug : false;
     // array to store commands
     this.commands = [];
     // array to store things to listen for
@@ -19,7 +18,7 @@ var Awesom0 = {
     this.joins = [];
     // loop through all scripts enabled in settings, importing them and storing them
     // in the commands array
-    for (var i = 0, file; file = settings.commands[i]; i++) {
+    for (var i = 0, file; file = this.settings.commands[i]; i++) {
       try {
         require("./scripts/" + file)(this);
       }
@@ -29,13 +28,13 @@ var Awesom0 = {
       }
     }
     // create a new client 
-    this.client = new irc.Client(settings.server, settings.botname, {
-      channels: settings.channels,
+    this.client = new irc.Client(this.settings.server, this.settings.botname, {
+      channels: this.settings.channels,
       port: settings.port || 6667,
       autoConnect: !this.debug,
       showErrors: this.debug,
-      userName: settings.userName || 'awesom0',
-      realName: settings.realName || 'AWESOM-0'
+      userName: this.settings.userName || 'awesom0',
+      realName: this.settings.realName || 'AWESOM-0'
     });
     // bind all events
     this.client.addListener('connect', this.onconnect.bind(this));
@@ -104,7 +103,7 @@ var Awesom0 = {
       console.log(chalk.yellow('Message (' + from + ' via ' + channel + '):'), message);
 
     // check if pm. if so, set channel to nick sending the pm
-    if (channel == settings.botname) {
+    if (channel == this.settings.botname) {
       channel = from;
     }
 
@@ -113,7 +112,7 @@ var Awesom0 = {
       return;
     }
     // check if message is directed at our bot
-    if (message.split(" ")[0].indexOf(settings.botname) > -1) {
+    if (message.split(" ")[0].indexOf(this.settings.botname) > -1) {
       // remove the name of the bot from the message
       var tokens = message.split(" ")
       tokens.splice(0, 1)
@@ -155,7 +154,7 @@ var Awesom0 = {
   },
 
   printHelp: function(channel, from) {
-    var response = (typeof settings.help === 'undefined') ? "" : settings.help;
+    var response = (typeof this.settings.help === 'undefined') ? "" : this.settings.help;
     response += "Here is a list of my available commands:\n";
     // loop through all commands and print their help, if it's been defined
     for (var i = 0, command; command = this.commands[i]; i++) {
