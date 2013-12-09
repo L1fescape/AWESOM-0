@@ -4,18 +4,23 @@ var
   chalk = require('chalk');
 
 
-var Awesom0 = {
+module.exports = Awesom0 = {
   init: function(settings) {
     // import settings
     this.settings = settings || require("./settings");
+
     // determine whether or not we should be in debug mode
     this.debug = (typeof this.settings.debug !== 'undefined') ? this.settings.debug : false;
+
     // array to store commands
     this.commands = [];
+
     // array to store things to listen for
-    this.sounds = [];
+    this.listen = [];
+
     // array to store events to happen onjoin
     this.joins = [];
+
     // loop through all scripts enabled in settings, importing them and storing them
     // in the commands array
     for (var i = 0, file; file = this.settings.commands[i]; i++) {
@@ -27,21 +32,24 @@ var Awesom0 = {
         console.warn(file + " does not appear to be a valid command");
       }
     }
+
     // create a new client 
     this.client = new irc.Client(this.settings.server, this.settings.botname, {
       channels: this.settings.channels,
-      port: settings.port || 6667,
+      port: this.settings.port || 6667,
       autoConnect: !this.debug,
       showErrors: this.debug,
       userName: this.settings.userName || 'awesom0',
       realName: this.settings.realName || 'AWESOM-0'
     });
+
     // bind all events
     this.client.addListener('connect', this.onconnect.bind(this));
     this.client.addListener('kick', this.onkick.bind(this));
     this.client.addListener('message', this.onmessage.bind(this));
     this.client.addListener('join', this.onjoin.bind(this));
     this.client.addListener('error', this.onerror.bind(this));
+
     // if in debug mode, define our own say function and a function that makes
     // testing commands easier
     if (this.debug) {
@@ -55,6 +63,8 @@ var Awesom0 = {
         this.onmessage("TestUser", "#test", msg);
       }
     }
+
+    return this;
   },
 
   // scripts call this method to register their commands, callbacks, and usage
@@ -73,7 +83,7 @@ var Awesom0 = {
       callback = usage;
       usage = null;
     }
-    this.sounds.push({ match: match, command: callback, usage: usage });
+    this.listen.push({ match: match, command: callback, usage: usage });
   },
 
   userJoin: function(callback) {
@@ -134,8 +144,8 @@ var Awesom0 = {
     }
     else {
       // loop through all commands checking if there's a match
-      for (var i = 0, match, j = this.sounds.length; i < j; i++) {
-        match = message.match(this.sounds[i]['match']);
+      for (var i = 0, match, j = this.listen.length; i < j; i++) {
+        match = message.match(this.listen[i]['match']);
         if (match && match.length) {
           var msg = {
             match: match,
@@ -143,7 +153,7 @@ var Awesom0 = {
             message: message,
             channel: channel
           };
-          this.sounds[i].command(msg);
+          this.listen[i].command(msg);
         }
       }
     }
@@ -167,4 +177,8 @@ var Awesom0 = {
 
 };
 
-module.exports = Awesom0;
+// if calling awesom0.js directly this usually means we're running it from the command line
+// and should therefore be initialized
+// TODO: fix this. temporary fix until command line args are supported.
+if (process.argv && process.argv.length > 1 && process.argv[1].indexOf("awesom0.js") > -1)
+  Awesom0.init();

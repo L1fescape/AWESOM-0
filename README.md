@@ -32,6 +32,8 @@ Commands can be enabled and disabled by adding or removing them from the <code>c
 
 ## Running
 
+From the command line:
+
 ```
 node awesom0.js
 ```
@@ -40,6 +42,13 @@ With [forever](https://github.com/nodejitsu/forever) (note you'll need to instal
 
 ```
 forever start awesom0.js
+```
+
+Using it inside another Nodejs file:
+
+```
+var a = require("./awesom0")
+a.init({ commands: ["hi"], botname: "AWESOM0" });
 ```
 
 ## Writing Scripts
@@ -67,7 +76,7 @@ In order to test a script (in this case, the "it's a trap" script), do the follo
 $ node
 //=> 
 
-> a = require("./awesom0")
+> a = require("./awesom0").init()
 //=>
 
 > a.printHelp()
@@ -93,8 +102,8 @@ $ node
 
 ## TODO
 
-- Integrate calendar with google calendar
-- Write more sick scripts!
+- Write more tests
+- redis
 
 ## Contribute
 
