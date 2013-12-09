@@ -1,4 +1,4 @@
-# AWESOM-0
+# AWESOM-0 [![Build Status](https://travis-ci.org/L1fescape/AWESOM-0.png?branch=master)](https://travis-ci.org/L1fescape/AWESOM-0)
 > Hey there have you heard about my robot friend? He's metal and small and doesn't judge me at all.
 
 Meet AWESOM-0, you're friendly neighborhood IRC bot! Similar to [Hubot](http://hubot.github.com/), AWESOM-0 responds to a variety of commands that are defined in a folder called <code>scripts</code>.
