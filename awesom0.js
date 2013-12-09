@@ -1,14 +1,14 @@
 var 
   // libraries
   irc = require('irc'),
-  chalk = require('chalk'),
-
-  // import settings
-  settings = require("./settings");
+  chalk = require('chalk');
 
 
 var Awesom0 = {
-  init: function() {
+  init: function(settings) {
+    // import settings
+    if (!settings)
+      settings = require("./settings");
     // determine whether or not we should be in debug mode
     this.debug = (typeof settings.debug !== 'undefined') ? settings.debug : false;
     // array to store commands
@@ -167,8 +167,5 @@ var Awesom0 = {
   }
 
 };
-
-// create and start the bot
-Awesom0.init();
 
 module.exports = Awesom0;
