@@ -3,8 +3,7 @@ var request = require('request');
 module.exports = function(bot) {
 
   bot.hear(/!btc/i, function(msg) {
-    var url = "https://btc-e.com/api/2/btc_usd/ticker"
-    request(url, function (error, response, body) {
+    request("https://btc-e.com/api/2/btc_usd/ticker", function (error, response, body) {
       var results = JSON.parse(body);
       if (results["ticker"].length == 0)
         bot.client.say(msg.channel, "Unavailable");
@@ -13,8 +12,7 @@ module.exports = function(bot) {
         bot.client.say(msg.channel, "BTC-E: " + price + " USD/BTC");
       }
     });
-    var url = "https://www.bitstamp.net/api/ticker/"
-    request(url, function (error, response, body) {
+    request("https://www.bitstamp.net/api/ticker/", function (error, response, body) {
       var results = JSON.parse(body);
       if (results["last"].length == 0)
         bot.client.say(msg.channel, "Unavailable");
