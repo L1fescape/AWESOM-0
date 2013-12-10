@@ -1,7 +1,7 @@
 var assert  = require('assert');
 
 var settings = {
-  commands: ["hi"], 
+  commands: ["ackbar", "bitcoin", "eval", "hi", "imageme", "karma", "notes", "pugme", "question", "quotes", "rps", "rules", "uptime", "urban", "youtube"], 
   debug: true, 
   botname: "AWESOM0"
 };

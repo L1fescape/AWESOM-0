@@ -1,7 +1,7 @@
 var
 
-  commands = ["ackbar", "eval", "quotes", "karma", "hi", "imageme", "notes", "pugme", "question", "rules", "youtube"],
-  debug = false,
+  commands = ["ackbar", "bitcoin", "eval", "hi", "imageme", "karma", "notes", "pugme", "question", "quotes", "rps", "rules", "uptime", "urban", "youtube"],
+  debug = true,
 
   channels = ["<#channel>", "<#channel>"],
   botname = "AWESOM-0",
