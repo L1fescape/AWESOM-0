@@ -10,7 +10,17 @@ module.exports = function(bot) {
         bot.client.say(msg.channel, "Unavailable");
       else {
         var price = results["ticker"]["avg"];
-        bot.client.say(msg.channel, price + " USD/BTC");
+        bot.client.say(msg.channel, "BTC-E: " + price + " USD/BTC");
+      }
+    });
+    var url = "https://www.bitstamp.net/api/ticker/"
+    request(url, function (error, response, body) {
+      var results = JSON.parse(body);
+      if (results["last"].length == 0)
+        bot.client.say(msg.channel, "Unavailable");
+      else {
+        var price = results["last"];
+        bot.client.say(msg.channel, "Bitstamp: " + price + " USD/BTC");
       }
     });
   });
