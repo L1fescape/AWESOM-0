@@ -1,0 +1,17 @@
+var
+
+  commands = ["ackbar", "bitcoin", "eval", "hi", "imageme", "karma", "notes", "pugme", "question", "quotes", "rps", "rules", "uptime", "urban", "youtube"],
+  debug = true,
+
+  channels = ["#acritestest"],
+  botname = "AWESOM-0",
+  server = "mobirc.bjornhd.com",
+
+  help = "Hi, I'm " + botname + ". "; // leave blank for no help message
+
+exports.debug = debug
+exports.commands = commands
+exports.channels = channels
+exports.server = server
+exports.botname = botname
+exports.help = help
