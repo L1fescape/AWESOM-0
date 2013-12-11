@@ -9,6 +9,13 @@ module.exports = Awesom0 = {
     // import settings
     this.settings = settings || require("./settings");
 
+    // check if redis is enabled
+    this.redis = (typeof this.settings.redis !== 'undefined') ? this.settings.redis : false;
+    if (this.redis) {
+      var redis = require("redis");
+      this.redisClient = redis.createClient();
+    }
+
     // determine whether or not we should be in debug mode
     this.debug = (typeof this.settings.debug !== 'undefined') ? this.settings.debug : false;
 
@@ -173,6 +180,42 @@ module.exports = Awesom0 = {
     }
 
     this.client.say(from, response);
+  },
+
+  store : {
+    values: {},
+
+    get: function(key, callback) {
+      var self = Awesom0;
+      console.log(self.redis)
+      if (self.redis) {
+        self.redisClient.get(key, function(err, value) {
+          try {
+            value = JSON.parse(value);
+          }
+          catch (err) {
+            value = {};
+          }
+          callback(value);
+        });
+      }
+      else {
+        callback(self.store.values[key]);
+      }
+    },
+
+    set: function(key, value, callback) {
+      var self = Awesom0;
+      if (self.redis) {
+        if (typeof value !== 'string')
+          value = JSON.stringify(value);
+
+        self.redisClient.set(key, value);
+      }
+      else {
+        self.store.values[key] = value;
+      }
+    },
   }
 
 };

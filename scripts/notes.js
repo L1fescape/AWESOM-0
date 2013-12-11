@@ -1,6 +1,5 @@
 var moment = require('moment'),
-    redis = require("redis"),
-    client = redis.createClient();
+    _ = require('underscore');
 
 
 module.exports = function(bot) {
@@ -15,33 +14,24 @@ module.exports = function(bot) {
   }
 
   function getNotes(user, callback) {
-    client.get(user, function(err, notes) {
-      try {
-        notes = JSON.parse(notes);
-      }
-      catch (err) {
+    bot.store.get("notes " + user, function(notes) {
+      if (!notes || _.isEmpty(notes))
         notes = {
           seen: true,
           notes: []
         };
-      }
-      if (notes === null)
-        notes = {
-          seen: true,
-          notes: []
-        };
+
       setNotes(user, notes);
 
       callback(notes);
     });
-  }
+  };
 
   function setNotes(user, notes) {
-    notes = JSON.stringify(notes)
-    client.set(user, notes, redis.print);
+    bot.store.set("notes " + user, notes);
   }
 
-  function checkSeenNotes(msg) {
+  bot.userJoin(function(msg) {
     var user = (typeof msg.from !== 'undefined') ? msg.from.toLowerCase() : msg.nick.toLowerCase();
     getNotes(user, function(notes) {
       if (notes.seen === false) {
@@ -51,12 +41,7 @@ module.exports = function(bot) {
 
       setNotes(user, notes);
     });
-  }
-
-  bot.userJoin(checkSeenNotes);
-
-  bot.hear(/.*/i, checkSeenNotes);
-
+  });
 
   bot.respond(/^notes$/i, "notes - Display notes left for you", function(msg) {
     var response = "";

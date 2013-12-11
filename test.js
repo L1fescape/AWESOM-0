@@ -3,6 +3,7 @@ var assert  = require('assert');
 var settings = {
   commands: ["ackbar", "bitcoin", "eval", "hi", "imageme", "karma", "notes", "pugme", "question", "quotes", "rps", "rules", "uptime", "urban", "youtube"], 
   debug: true, 
+  redis: false,
   botname: "AWESOM0"
 };
 
