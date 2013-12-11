@@ -14,7 +14,7 @@ module.exports = function(bot) {
   }
 
   function getNotes(user, callback) {
-    bot.store.get("notes " + user, function(notes) {
+    bot.db.get("notes " + user, function(notes) {
       if (!notes || _.isEmpty(notes))
         notes = {
           seen: true,
@@ -28,7 +28,7 @@ module.exports = function(bot) {
   };
 
   function setNotes(user, notes) {
-    bot.store.set("notes " + user, notes);
+    bot.db.set("notes " + user, notes);
   }
 
   bot.userJoin(function(msg) {

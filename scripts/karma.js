@@ -1,13 +1,19 @@
-var karma = {}
-
 module.exports = function(bot) {
-  bot.respond(/\w+\+\+$|\w+--$/i, "<user>++ or <user>-- : Record karma", function(msg) {
-    var doInc =  msg.message.match(/\w+\+\+$/) !== null;
+  bot.hear(/\w+\+\+$|\w+--$/i, "<user>++ or <user>-- : Record karma", function(msg) {
     var person = msg.message.match(/\w+\+\+$|\w+--/)[0].replace(/\+\+$|--$/,"")
-    var oldKarma = karma[person] === undefined ? 0 : karma[person]
-    karma[person] = doInc ? ++oldKarma : --oldKarma
 
-    var response = person + " ⇒ " + karma[person];
-    bot.client.say(msg.channel, response);
+    bot.db.get("karma " + person, function(karma) {
+      if (!karma)
+        karma = 0;
+      if (/\w+\+\+$/.test(msg.message))
+        ++karma
+      else
+        --karma
+      bot.db.set("karma " + person, karma);
+
+      var response = person + " ⇒ " + karma;
+      bot.client.say(msg.channel, response);
+    });
+
   });
 };

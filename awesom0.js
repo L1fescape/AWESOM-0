@@ -19,7 +19,18 @@ module.exports = Awesom0 = {
     this.redis = (typeof this.settings.redis !== 'undefined') ? this.settings.redis : false;
     if (this.redis) {
       var redis = require("redis");
-      this.redisClient = redis.createClient();
+      this.redisClient = redis.createClient(6379, "127.0.0.1", {
+        "max_attempts": 3
+      });
+      var attempts = 0;
+      this.redisClient.on("error", function (err) {
+        attempts += 1;
+        if (attempts == 3) {
+          console.log(chalk.red("Error: Could not connect to redis server."), "Is redis running? Defaulting to temporary storage.");
+          console.log(chalk.blue("Note:"), "If you don't want to use redis, you can disable in settings.js");
+          this.redis = false;
+        }
+      }.bind(this));
     }
 
     // determine whether or not we should be in debug mode
@@ -188,12 +199,13 @@ module.exports = Awesom0 = {
     this.client.say(from, response);
   },
 
-  store : {
+  // simple key/value store for AWESOM-0 that uses redis if enabled or an
+  // instance variable if it is not.
+  db : {
     values: {},
 
     get: function(key, callback) {
       var self = Awesom0;
-      console.log(self.redis)
       if (self.redis) {
         self.redisClient.get(key, function(err, value) {
           try {
@@ -206,7 +218,7 @@ module.exports = Awesom0 = {
         });
       }
       else {
-        callback(self.store.values[key]);
+        callback(self.db.values[key]);
       }
     },
 
@@ -219,7 +231,7 @@ module.exports = Awesom0 = {
         self.redisClient.set(key, value);
       }
       else {
-        self.store.values[key] = value;
+        self.db.values[key] = value;
       }
     },
   }
