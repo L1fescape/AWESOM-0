@@ -7,7 +7,13 @@ var
 module.exports = Awesom0 = {
   init: function(settings) {
     // import settings
-    this.settings = settings || require("./settings");
+    try {
+        this.settings = settings || require("./settings");
+    }
+    catch (error) {
+        throw "Unable to load ./settings.js.  This file must exist and export AWESOM-0's\n"
+            + "required settings.  You can probably just copy ./settings.js.sample";
+    }
 
     // determine whether or not we should be in debug mode
     this.debug = (typeof this.settings.debug !== 'undefined') ? this.settings.debug : false;
