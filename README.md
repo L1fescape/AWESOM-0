@@ -103,7 +103,7 @@ $ node
 ## TODO
 
 - Write more tests
-- redis
+- Document using redis
 
 ## Contribute
 
