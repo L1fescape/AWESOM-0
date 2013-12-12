@@ -2,7 +2,7 @@ var request = require('request');
 
 module.exports = function(bot) {
 
-  bot.hear(/!u /i, function(msg) {
+  bot.hear(/!u /i, "!u <term> - look something up on urban dictionary.", function(msg) {
     var term = msg.message.replace("!u ", "");
     var url = "http://api.urbandictionary.com/v0/define?term=" + term
     request(url, function (error, response, body) {

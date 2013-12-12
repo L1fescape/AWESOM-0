@@ -1,5 +1,5 @@
 module.exports = function(bot) {
-  bot.hear(/\w+\+\+$|\w+--$/i, "<user>++ or <user>-- : Record karma", function(msg) {
+  bot.hear(/\w+\+\+$|\w+--$/i, "<user>++ | <user>-- - increment or decrement a user's karma.", function(msg) {
     var person = msg.message.match(/\w+\+\+$|\w+--/)[0].replace(/\+\+$|--$/,"")
     
     if (person != msg.from) {
@@ -26,7 +26,7 @@ module.exports = function(bot) {
 
 
 
-  bot.respond(/^karma$/i, "karma - retreive karma level", function(msg) {
+  bot.respond(/^karma$/i, "karma - retreive karma level.", function(msg) {
 
     bot.db.get("karma " + msg.from, function(karma) {
       if (!karma)

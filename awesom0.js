@@ -195,6 +195,8 @@ module.exports = Awesom0 = {
       if (typeof command.usage !== 'undefined' && command.usage != null)
         response += command.usage + "\n";
     }
+    response += "Note: Generally if a command has a bang (!) in front of it, the bot is listening for \
+                 for that string. The command doesn't need to have the botname before it.";
 
     this.client.say(from, response);
   },

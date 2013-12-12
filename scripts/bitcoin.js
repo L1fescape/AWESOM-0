@@ -2,7 +2,7 @@ var request = require('request');
 
 module.exports = function(bot) {
 
-  bot.hear(/!btc/i, function(msg) {
+  bot.hear(/!btc/i, "!btc - display current bitcoin price.", function(msg) {
     request("https://btc-e.com/api/2/btc_usd/ticker", function (error, response, body) {
       var results = JSON.parse(body);
       if (results["ticker"].length == 0)
