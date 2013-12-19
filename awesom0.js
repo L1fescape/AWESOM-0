@@ -1,4 +1,4 @@
-var 
+var
   // libraries
   irc = require('irc'),
   chalk = require('chalk');
@@ -57,7 +57,7 @@ module.exports = Awesom0 = {
       }
     }
 
-    // create a new client 
+    // create a new client
     this.client = new irc.Client(this.settings.server, this.settings.botname, {
       channels: this.settings.channels,
       port: this.settings.port || 6667,

@@ -8,7 +8,7 @@ module.exports = function(bot) {
       if (results["ticker"].length == 0)
         bot.client.say(msg.channel, "Unavailable");
       else {
-        var price = results["ticker"]["avg"];
+        var price = results["ticker"]["last"];
         bot.client.say(msg.channel, "BTC-E: " + price + " USD/BTC");
       }
     });
