@@ -4,21 +4,21 @@ module.exports = function(bot) {
 
   bot.respond(/^quotes/i, "quotes [<user>] - retrieve all quotes or a specific user's quotes", function(msg) {
     var response = "";
-    var user = msg.message.split(" ")[1];
+    var notesForUser = msg.message.split(" ")[1];
    
     bot.db.get("quotes", function(quotes) {
       if (!quotes)
         quotes = {};
 
-      if (user) {
+      if (notesForUser) {
         // if there are no quotes for a user
-        if (typeof quotes[user] === 'undefined' || quotes[user].length == 0)
+        if (typeof quotes[notesForUser] === 'undefined' || quotes[notesForUser].length == 0)
           resonse = "There are no quotes for this user.";
 
         // else print all that user's quotes
         else {
-          for (var i = 0, j = quotes[user].length; i < j; i++) {
-            response += quotes[user][i] + "\n"; 
+          for (var i = 0, j = quotes[notesForUser].length; i < j; i++) {
+            response += quotes[notesForUser][i] + "\n"; 
           }
         }
       }
