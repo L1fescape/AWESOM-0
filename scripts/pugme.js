@@ -1,7 +1,4 @@
-var 
-  // libraries
-  vsprint = require("sprintf-js").vsprintf, 
-  request = require('request');
+var request = require('request');
 
 module.exports = function(bot) {
 
