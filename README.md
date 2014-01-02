@@ -105,9 +105,9 @@ $ node
 - Write more tests
 - Document using redis
 
-## Contribute
+## Issues or Questions
 
-If you have a feature you'd like to add or a gesture you'd like supported, submit an issue through GitHub or better yet, a pull request!
+If there's a feature you'd like supported or a bug in the code, create an [issue on GitHub](https://github.com/L1fescape/AWESOM-0/issues). If you have any questions, join us on IRC. We're at `#AWESOM-0` on Freenode.
 
 ## Acknowledgements
 
