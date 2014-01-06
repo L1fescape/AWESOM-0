@@ -15,17 +15,21 @@ module.exports = Awesom0 = {
             + "required settings.  You can probably just copy ./settings.js.sample";
     }
 
-    // check if redis is enabled
+    // check if redis is enabled. If it is, attempt to connect to a redis server.
     this.redis = (typeof this.settings.redis !== 'undefined') ? this.settings.redis : false;
+    console.log(this.settings.redis)
     if (this.redis) {
-      var redis = require("redis");
-      this.redisClient = redis.createClient(6379, "127.0.0.1", {
-        "max_attempts": 3
-      });
-      var attempts = 0;
+      var redis = require("redis"),
+          maxAttempts = 3;
+      this.redisClient = redis.createClient(
+        this.settings.redisPort || 6379, 
+        this.settings.redisHost || "127.0.0.1", 
+        {
+          "max_attempts": maxAttempts
+        }
+      );
       this.redisClient.on("error", function (err) {
-        attempts += 1;
-        if (attempts == 3) {
+        if (!maxAttempts--) {
           console.log(chalk.red("Error: Could not connect to redis server."), "Is redis running? Defaulting to temporary storage.");
           console.log(chalk.blue("Note:"), "If you don't want to use redis, you can disable in settings.js");
           this.redis = false;
@@ -33,17 +37,12 @@ module.exports = Awesom0 = {
       }.bind(this));
     }
 
-    // determine whether or not we should be in debug mode
-    this.debug = (typeof this.settings.debug !== 'undefined') ? this.settings.debug : false;
-
-    // array to store commands
-    this.commands = [];
-
-    // array to store things to listen for
-    this.listen = [];
-
-    // array to store events to happen onjoin
-    this.joins = [];
+    // 
+    this.triggers = {
+      oncommand : [],
+      onhear : [],
+      onjoin : []
+    };
 
     // loop through all scripts enabled in settings, importing them and storing them
     // in the commands array
@@ -56,6 +55,9 @@ module.exports = Awesom0 = {
         console.warn(file + " does not appear to be a valid command");
       }
     }
+
+    // determine whether or not we should be in debug mode
+    this.debug = (typeof this.settings.debug !== 'undefined') ? this.settings.debug : false;
 
     // create a new client
     this.client = new irc.Client(this.settings.server, this.settings.botname, {
@@ -99,7 +101,7 @@ module.exports = Awesom0 = {
       callback = usage;
       usage = null;
     }
-    this.commands.push({ match: match, command: callback, usage: usage });
+    this.triggers.oncommand.push({ match: match, command: callback, usage: usage });
   },
 
   hear: function(match, usage, callback) {
@@ -107,11 +109,11 @@ module.exports = Awesom0 = {
       callback = usage;
       usage = null;
     }
-    this.listen.push({ match: match, command: callback, usage: usage });
+    this.triggers.onhear.push({ match: match, command: callback, usage: usage });
   },
 
   userJoin: function(callback) {
-    this.joins.push(callback);
+    this.triggers.onjoin.push(callback);
   },
 
   onconnect: function() {
@@ -120,8 +122,8 @@ module.exports = Awesom0 = {
   },
 
   onjoin: function(channel, nick, message) {
-    for (var i = 0, j = this.joins.length; i < j; i++) {
-      this.joins[i]({channel: channel, nick: nick, message:message});
+    for (var i = 0, j = this.triggers.onjoin.length; i < j; i++) {
+      this.triggers.onjoin[i]({channel: channel, nick: nick, message:message});
     }
   },
 
@@ -139,6 +141,7 @@ module.exports = Awesom0 = {
     // check if pm. if so, set channel to nick sending the pm
     if (channel == this.settings.botname) {
       channel = from;
+      this.checkCommands(from, channel, message);
     }
 
     // check if message is directed at our bot
@@ -146,35 +149,41 @@ module.exports = Awesom0 = {
       // remove the name of the bot from the message
       var tokens = message.split(" ")
       tokens.splice(0, 1)
-      message = tokens.join(" ")
+      message = tokens.join(" ");
+      this.checkCommands(from, channel, message);
+    }
 
-      // loop through all commands checking if there's a match
-      for (var i = 0, match, j = this.commands.length; i < j; i++) {
-        match = message.match(this.commands[i]['match']);
-        if (match && match.length) {
-          var msg = {
-            match: match,
-            from: from,
-            message: message,
-            channel: channel
-          };
-          this.commands[i].command(msg);
-        }
+    this.checkListens(from, channel, message);
+  },
+
+  checkCommands: function(from, channel, message) {
+    // commands
+    for (var i = 0, match, j = this.triggers.oncommand.length; i < j; i++) {
+      match = message.match(this.triggers.oncommand[i]['match']);
+      if (match && match.length) {
+        var msg = {
+          match: match,
+          from: from,
+          message: message,
+          channel: channel
+        };
+        this.triggers.oncommand[i].command(msg);
       }
     }
-    else {
-      // loop through all commands checking if there's a match
-      for (var i = 0, match, j = this.listen.length; i < j; i++) {
-        match = message.match(this.listen[i]['match']);
-        if (match && match.length) {
-          var msg = {
-            match: match,
-            from: from,
-            message: message,
-            channel: channel
-          };
-          this.listen[i].command(msg);
-        }
+  },
+
+  checkListens: function(from, channel, message) {
+    // listen
+    for (var i = 0, match, j = this.triggers.onhear.length; i < j; i++) {
+      match = message.match(this.triggers.onhear[i]['match']);
+      if (match && match.length) {
+        var msg = {
+          match: match,
+          from: from,
+          message: message,
+          channel: channel
+        };
+        this.triggers.onhear[i].command(msg);
       }
     }
   },
@@ -188,7 +197,7 @@ module.exports = Awesom0 = {
     var response = (typeof this.settings.help === 'undefined') ? "" : this.settings.help;
     response += "Here is a list of my available commands:\n";
     // loop through all commands and print their help, if it's been defined
-    for (var i = 0, command; command = this.commands[i]; i++) {
+    for (var i = 0, command; command = this.triggers.oncommand[i]; i++) {
       if (typeof command.usage !== 'undefined' && command.usage != null)
         response += command.usage + "\n";
     }

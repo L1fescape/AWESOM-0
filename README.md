@@ -1,7 +1,7 @@
 # AWESOM-0 [![Build Status](https://travis-ci.org/L1fescape/AWESOM-0.png?branch=master)](https://travis-ci.org/L1fescape/AWESOM-0)
 > Hey there have you heard about my robot friend? He's metal and small and doesn't judge me at all.
 
-Meet AWESOM-0, you're friendly neighborhood IRC bot! Similar to [Hubot](http://hubot.github.com/), AWESOM-0 responds to a variety of commands that are defined in a folder called <code>scripts</code>.
+Meet AWESOM-0, your friendly neighborhood IRC bot! Similar to [Hubot](http://hubot.github.com/), the commands AWESOM-0 responds to and phrases the bot can listen for are defined inside of scripts located in appropriately labled `scripts` folder. Scripts can be enabled by including the filename of the script inside a `commands` array located in `settings.js`. You can look at `settings.js.sample` for an example settings file.
 
 ## Examples
 
@@ -28,7 +28,7 @@ npm install
 Create a file called <code>settings.js</code> (you can copy
 from the existing <code>settings.js.sample</code>).
 
-Commands can be enabled and disabled by adding or removing them from the <code>commands</code> array.
+Commands can be enabled and disabled by adding or removing them from the <code>commands</code> array inside of `setttings.js`.
 
 ## Running
 
@@ -44,7 +44,7 @@ With [forever](https://github.com/nodejitsu/forever) (note you'll need to instal
 forever start awesom0.js
 ```
 
-Using it inside another Nodejs file:
+Using AWESOM-0 inside another Nodejs file:
 
 ```
 var a = require("./awesom0")
@@ -68,18 +68,15 @@ For a good example of all of this, check out the [hi script](https://github.com/
 
 ## Debugging
 
-If you want to test scripts without connecting to an IRC srever, you're in luck! In `settings.js` you can set the value of `debug` to true. This will display errors, show messages the irc bot receives, and will print responses triggered by vaious commands. Setting debug mode to true will also define a function called `testMsg(msg)` which is an alias for `onmessage("TestUser", "#test", msg)`. This makes testing commands a little easier as you don't need to define the user and channel a message was sent from/to every time.
+AWESOM-0 has a bundled debug script for testing commands and scripts locally without connecting to an IRC server. To use it, set `debug = true` inside `settings.js` and then run `node debug.js` (setting debug mode to true will also define a function called `testMsg(msg)` which is an alias for `onmessage("TestUser", "#test", msg)`, making testing commands a little easier as you don't need to define the user and channel a message was sent from/to every time).
 
-In order to test a script (in this case, the "it's a trap" script), do the following:
+You should now see a repl which will allow you to interact with the bot and test commands. Here is an example of running the debug script, displaying help, unsuccessfully running the "it's a trap" script, successfully running it, then using `onmessage` directly instead of the `testMsg` alias: 
 
 ```js
-$ node
+$ node debug.js
 //=> 
 
-> a = require("./awesom0").init()
-//=>
-
-> a.printHelp()
+> a.testMsg("AWESOM-0 help")
 //=> Hi I'm AWESOM-0. Here is a list of my available commands:
 //=> hi - Send greetings
 //=> it's a trap - Display an Admiral Ackbar piece of wonder
