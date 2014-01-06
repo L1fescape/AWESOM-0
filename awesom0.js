@@ -141,10 +141,6 @@ module.exports = Awesom0 = {
       channel = from;
     }
 
-    if (/^help$/i.test(message)) {
-      this.printHelp(channel, from);
-      return;
-    }
     // check if message is directed at our bot
     if (message.split(" ")[0].indexOf(this.settings.botname) > -1) {
       // remove the name of the bot from the message
@@ -187,7 +183,8 @@ module.exports = Awesom0 = {
     console.log(chalk.red("Error: "), error);
   },
 
-  printHelp: function(channel, from) {
+  // help is always returned as a private message to the user who issued the command
+  printHelp: function(from) {
     var response = (typeof this.settings.help === 'undefined') ? "" : this.settings.help;
     response += "Here is a list of my available commands:\n";
     // loop through all commands and print their help, if it's been defined
@@ -195,8 +192,8 @@ module.exports = Awesom0 = {
       if (typeof command.usage !== 'undefined' && command.usage != null)
         response += command.usage + "\n";
     }
-    response += "Note: Generally if a command has a bang (!) in front of it, the bot is listening for \
-                 for that string. The command doesn't need to have the botname before it.";
+    response += "Note: Generally if a command has a bang (!) in front of it, the bot is listening for ";
+    response += "for that string. The command doesn't need to have the botname before it.";
 
     this.client.say(from, response);
   },

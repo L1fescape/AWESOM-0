@@ -1,6 +1,6 @@
 var
 
-  commands = ["ackbar", "bitcoin", "eval", "hi", "imageme", "karma", "notes", "pugme", "question", "quotes", "rps", "rules", "uptime", "urban", "youtube"],
+  commands = ["help", "ackbar", "bitcoin", "eval", "hi", "imageme", "karma", "notes", "pugme", "question", "quotes", "rps", "rules", "uptime", "urban", "youtube"],
   debug = true,
   redis = false,
 
