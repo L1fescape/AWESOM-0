@@ -13,20 +13,12 @@ module.exports = function (bot) {
       }
       else {
         msg += osrc.name;
-        osrc.usage.languages.forEach(function (elem) {
-          if (langs[0] && elem.count > langs[0].count) {
-            langs[0] = elem;
-          }
-          else if (langs[1] && elem.count > langs[1].count) {
-            langs[1] = elem;
-          }
-          else if (!langs[0]) {
-            langs[0] = elem;
-          }
-          else if (!langs[1]) {
-              langs[1] = elem;
-          }
+        langs = osrc.usage.languages;
+        langs.sort(function (prev, next) {
+          return next.count - prev.count;
         });
+
+        langs = langs.slice(0, 2);
 
         if (langs.length) {
           msg += " really likes to use " + langs.reduce(function (msg, lang) {
