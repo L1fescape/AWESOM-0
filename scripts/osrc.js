@@ -6,13 +6,13 @@ module.exports = function (bot) {
     request("http://osrc.dfm.io/" + user + ".json", function (error, response, body) {
       var osrc = JSON.parse(body),
         langs = [],
-        msg = "";
+        output = "";
 
       if (osrc.hasOwnProperty("message")) {
         bot.client.say(msg.channel, user + " is either not a github user or is a very shitty one");
       }
       else {
-        msg += osrc.name;
+        output += osrc.name;
         langs = osrc.usage.languages;
         langs.sort(function (prev, next) {
           return next.count - prev.count;
@@ -21,15 +21,24 @@ module.exports = function (bot) {
         langs = langs.slice(0, 2);
 
         if (langs.length) {
-          msg += " really likes to use " + langs.reduce(function (msg, lang) {
+          output += " really likes to use " + langs.reduce(function (msg, lang) {
             return msg + lang.language + " (" + lang.count + ") and ";
           }, "").replace(/ and $/, "");
         }
         else {
-            msg += " doesn't like any languages."
+            output += " doesn't like any languages."
         }
 
-        bot.client.say(msg.channel, msg);
+        bot.client.say(msg.channel, output);
+
+        if (osrc.connected_users.length) {
+          bot.client.say(msg.channel, "Their favorite github users are obviously "
+            + osrc.connected_users[0].username + " and " + osrc.connected_users[1].username
+          );
+        }
+        else {
+          bot.client.say(msg.channel, "They don't get along with any github users");
+        }
       }
     });
   });
