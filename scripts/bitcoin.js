@@ -3,21 +3,21 @@ var request = require('request');
 module.exports = function(bot) {
 
   bot.hear(/!btc/i, "!btc - display current bitcoin price.", function(msg) {
-    request("https://btc-e.com/api/2/btc_usd/ticker", function (error, response, body) {
+    request("https://blockchain.info/ticker", function (error, response, body) {
       var results = JSON.parse(body);
-      if (results["ticker"].length == 0)
+      if (results["USD"].length == 0)
         bot.client.say(msg.channel, "Unavailable");
       else {
-        var price = results["ticker"]["last"];
-        bot.client.say(msg.channel, "BTC-E: " + price + " USD/BTC");
+        var price = results["USD"]["15m"];
+        bot.client.say(msg.channel, "blockchain.info: " + price + " USD/BTC");
       }
     });
-    request("https://www.bitstamp.net/api/ticker/", function (error, response, body) {
+    request("http://btc.blockr.io/api/v1/exchangerate/current", function (error, response, body) {
       var results = JSON.parse(body);
-      if (results["last"].length == 0)
+      if (results["status"] != "success")
         bot.client.say(msg.channel, "Unavailable");
       else {
-        var price = results["last"];
+        var price = 1 / results["data"]["rates"]["BTC"];
         bot.client.say(msg.channel, "Bitstamp: " + price + " USD/BTC");
       }
     });
