@@ -1,12 +1,12 @@
 var
 
-  commands = ["help", "ackbar", "bitcoin", "eval", "hi", "imageme", "karma", "notes", "pugme", "question", "quotes", "rps", "rules", "uptime", "urban", "youtube", "osrc"],
-  debug = true,
+  commands = ["help", "ackbar", "ascii-faces", "bitcoin", "eval", "hi", "imageme", "karma", "tell", "pugme", "question", "quotes", "rps", "rules", "uptime", "urban", "youtube", "osrc"],
+  debug = false,
   redis = false,
 
-  channels = ["<#channel>", "<#channel>"],
+  channels = ["#Mobiquity"],
   botname = "AWESOM-0",
-  server = "<server addr>",
+  server = "mobirc.bjornhd.com",
 
   help = "Hi, I'm " + botname + ". "; // leave blank for no help message
 

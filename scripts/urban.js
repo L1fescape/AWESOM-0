@@ -1,4 +1,5 @@
-var request = require('request');
+var request = require('request'),
+  limit = 10;
 
 module.exports = function(bot) {
 
@@ -11,7 +12,9 @@ module.exports = function(bot) {
         bot.client.say(msg.channel, "No results for " + term);
       else {
         var definition = results["list"][0]["definition"];
+        definition = definition.split("\n").slice(0, limit).join('\n');
         var example = results["list"][0]["example"];
+        example = example.split("\n").slice(0, limit).join('\n');
         bot.client.say(msg.channel, definition + ((example) ? "\nExample: " + results["list"][0]["example"] : ""));
       }
     });

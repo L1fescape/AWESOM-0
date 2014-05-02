@@ -17,7 +17,6 @@ module.exports = Awesom0 = {
 
     // check if redis is enabled. If it is, attempt to connect to a redis server.
     this.redis = (typeof this.settings.redis !== 'undefined') ? this.settings.redis : false;
-    console.log(this.settings.redis)
     if (this.redis) {
       var redis = require("redis"),
           maxAttempts = 3;
@@ -245,9 +244,4 @@ module.exports = Awesom0 = {
   }
 
 };
-
-// if calling awesom0.js directly this usually means we're running it from the command line
-// and should therefore be initialized
-// TODO: fix this. temporary fix until command line args are supported.
-if (process.argv && process.argv.length > 1 && process.argv[1].indexOf("awesom0.js") > -1)
-  Awesom0.init();
+Awesom0.init();

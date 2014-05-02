@@ -65,7 +65,7 @@ module.exports = function(bot) {
   });
 
 
-  bot.respond(/^note (.*)?/i, "note <user> <message> - Leave a note for a user", function(msg) {
+  bot.respond(/^tell (.*)?/i, "tell <user> <message> - Leave a note for a user", function(msg) {
     var tokens = msg.match[1].split(" ");
     var user = tokens.splice(0, 1).toString().toLowerCase();
     var note = {from: msg.from, time: new Date(), msg: tokens.join(" ")};
