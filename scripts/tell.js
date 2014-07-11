@@ -52,10 +52,10 @@ module.exports = function(bot) {
         response += note.from + " @ " + moment(note.time).fromNow() + ": " + note.msg + "\n";
       }
       userNotes.notes = [];
-      
+
       if (!response)
         response = "No new notes.";
-      
+
       userNotes.seen = true;
 
       setNotes(user, userNotes);

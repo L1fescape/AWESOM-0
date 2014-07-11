@@ -1,29 +1,33 @@
 #!/usr/bin/env node
-repl = require("repl");
+'use strict';
 
-require("node-getopt").create([
-  ["h", "help", "display this message"]
+var repl = require('repl'),
+  settings = require('./settings');
+
+require('node-getopt').create([
+  ['h', 'help', 'display this message']
 ]).bindHelp().setHelp(
-  "Usage: debug.js [-h|--help] [<AWESOM-O_variable_name>]\n\nIf no name is provided, 'a' is used\n\n"
-  + "Debug AWESOM-O by sending it a message via `<name>.testMsg(msg)`"
+  'Usage: debug.js [-h | --help] [<AWESOM-O_variable_name>]\n\nIf no name is ' +
+  'provided, \'a\' is used.\n\n Debug AWESOM-O by sending it a message via `<name>.testMsg(msg)`'
 )
 .parseSystem();
 
-var name = "a";
+var name = 'a';
 
-if ("undefined" !== typeof process.argv[2]) {
+if ('undefined' !== typeof process.argv[2]) {
   name = process.argv[2];
 }
 
 try {
-    global[name] = require("./awesom0");
-    global[name].init();
+    global[name] = require('./awesom0');
+    settings.debugREPL = true;
+    global[name].init(settings);
 
-    console.log("To see the current settings, simply type AWESOM-0's name, '" + name + "'");
+    console.log('To see the current settings, simply type AWESOM-0\'s name, \'' + name + '\'');
 
-    repl.start({prompt: "Debugging AWESOM-0 > "})
+    repl.start({prompt: 'Debugging AWESOM-0 > '});
 }
 catch (error) {
-    console.log("Unable to load AWESOM-0 due to error:");
+    console.log('Unable to load AWESOM-0 due to error:');
     console.log(error);
 }

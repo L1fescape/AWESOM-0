@@ -96,6 +96,12 @@ $ node debug.js
 
 ```
 
+## Testing
+
+```
+./node_modules/mocha/bin/mocha
+```
+
 
 ## TODO
 

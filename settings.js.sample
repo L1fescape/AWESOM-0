@@ -1,18 +1,32 @@
-var
+var botname = 'AWESOM-0';
 
-  commands = ["help", "ackbar", "ascii-faces", "bitcoin", "eval", "hi", "imageme", "karma", "tell", "pugme", "question", "quotes", "rps", "rules", "uptime", "urban", "youtube", "osrc"],
-  debug = false,
-  redis = false,
+module.exports = {
+  commands : [
+    'help',
+    'ackbar',
+    'ascii-faces',
+    'bitcoin',
+    'eval',
+    'hi',
+    'imageme',
+    'karma',
+    'tell',
+    'pugme',
+    'question',
+    'quotes',
+    'rps',
+    'rules',
+    'uptime',
+    'urban',
+    'youtube',
+    'osrc'
+  ],
+  debug : true,
+  redis : false,
 
-  channels = ["#Mobiquity"],
-  botname = "AWESOM-0",
-  server = "mobirc.bjornhd.com",
+  channels : ['#AWESOM-0'],
+  botname : botname,
+  server : 'chat.freenode.net',
 
-  help = "Hi, I'm " + botname + ". "; // leave blank for no help message
-
-exports.debug = debug
-exports.commands = commands
-exports.channels = channels
-exports.server = server
-exports.botname = botname
-exports.help = help
+  help : 'Hi, I\'m ' + botname + '. ' // leave blank for no help message
+};
