@@ -12,7 +12,6 @@ module.exports = {
     'karma',
     'tell',
     'pugme',
-    'question',
     'quotes',
     'rps',
     'rules',

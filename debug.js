@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-'use strict';
 
 var repl = require('repl'),
   settings = require('./settings');

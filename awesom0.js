@@ -1,4 +1,4 @@
-'use strict';
+#!/usr/bin/env node
 
 var irc = require('irc'),
   chalk = require('chalk'),
@@ -37,12 +37,13 @@ module.exports = Awesom0 = {
 
     // loop through all scripts enabled in settings and import them
     _.each(this.settings.commands, function(command){
+      if (this.debug) {
+        process.stdout.write(chalk.blue('Loading script:') + ' ' + command + ' ' + chalk.blue('...'));
+      }
+
       try {
-        if (this.debug) {
-          process.stdout.write(chalk.blue('Loading script:') + ' ' + command + ' ' + chalk.blue('...'));
-        }
         require('./scripts/' + command)(this);
-        process.stdout.write(chalk.blue(' done') + '\n');
+        if (this.debug){ process.stdout.write(chalk.blue(' done') + '\n'); }
       }
       catch (err) {
         if (this.debug) {
@@ -64,14 +65,21 @@ module.exports = Awesom0 = {
     if (this.debugREPL){
       // if we are debugging a script via repl, define our own say function and
       // a function that makes testing commands easier
+      var lastMsg = '';
       this.client = {
         say: function(channel, msg) {
-          console.log(chalk.green('Response (via ' + channel + '):'), msg);
+          lastMsg = msg;
+          if (this.debug) {
+            console.log(chalk.green('Response (via ' + channel + '):'), msg);
+          }
         },
         opt : this.client.opt
       };
       this.testMsg = function(msg) {
         this.onmessage('TestUser', '#test', msg);
+      };
+      this.lastMsg = function(){
+        return lastMsg;
       };
     } else {
       // connect to the irc server
@@ -84,7 +92,8 @@ module.exports = Awesom0 = {
       });
 
       // bind all events
-      this.client.addListener('connect', _.bind(this.onconnect, this));
+      this.client.addListener('connect', _.bind(this.connecting, this));
+      this.client.addListener('registered', _.bind(this.onconnect, this));
       this.client.addListener('message', _.bind(this.onmessage, this));
       this.client.addListener('join', _.bind(this.onjoin, this));
       this.client.addListener('error', _.bind(this.onerror, this));
@@ -97,7 +106,7 @@ module.exports = Awesom0 = {
   respond: function(match, usage, callback) {
     // if usage is a function, then it's probably supposed to be the callback
     // and there isn't a usage defined
-    if (typeof usage == 'function') {
+    if (typeof usage === 'function') {
       callback = usage;
       usage = null;
     }
@@ -116,10 +125,18 @@ module.exports = Awesom0 = {
     this.triggers.onjoin.push(callback);
   },
 
-  onconnect: function() {
+  connecting: function() {
     var opt = this.client.opt;
     if( this.debug ){
-      console.log('Connected to', opt.server, 'port', opt.port, 'on channels', opt.channels, 'as', opt.nick);
+      process.stdout.write('\n');
+      process.stdout.write(chalk.blue('Connecting to') + ' ' + opt.server + chalk.blue(' port ') + opt.port +
+        chalk.blue(' on channels ') + opt.channels + chalk.blue(' as ') + opt.nick + chalk.blue(' ... '));
+    }
+  },
+
+  onconnect: function() {
+    if( this.debug ){
+      process.stdout.write(chalk.blue('connected.\n'));
     }
   },
 
@@ -130,11 +147,12 @@ module.exports = Awesom0 = {
   },
 
   onmessage: function(from, channel, message) {
-    if (this.debug)
+    if (this.debug){
       console.log(chalk.yellow('Message (' + from + ' via ' + channel + '):'), message);
+    }
 
     // check if pm. if so, set channel to nick sending the pm
-    if (channel == this.settings.botname) {
+    if (channel === this.settings.botname) {
       channel = from;
       this.checkCommands(from, channel, message);
     }

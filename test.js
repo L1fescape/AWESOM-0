@@ -1,14 +1,30 @@
-var assert  = require('assert');
+var assert  = require('assert'),
+  expect = require("chai").expect;
 
 var settings = {
-  commands: ["ackbara", "bitcoin", "eval", "hi", "imageme", "karma", "tell", "pugme", "question", "quotes", "rps", "rules", "uptime", "urban", "youtube"],
+  commands: [
+    'ackbar',
+    'bitcoin',
+    'eval',
+    'hi',
+    'imageme',
+    'karma',
+    'tell',
+    'pugme',
+    'quotes',
+    'rps',
+    'rules',
+    'uptime',
+    'urban',
+    'youtube'
+  ],
   debug: true,
   debugREPL: true,
   redis: false,
-  botname: "AWESOM0"
+  botname: 'AWESOM0'
 };
 
-describe('AWESOM0', function () {
+describe('AWESOM0', function (){
   var awesom0;
 
   it('can be imported without blowing up', function () {
@@ -20,7 +36,21 @@ describe('AWESOM0', function () {
     awesom0.init(settings);
   });
 
-  it('can say hi back', function () {
+  it('can say hi back without crashing', function () {
+    var response;
     awesom0.testMsg('AWESOM0 hi!');
+    response = awesom0.lastMsg();
+
+    expect(response).to.contain('TestUser');
+  });
+
+  it('can store a note and retreive a note for a given user', function () {
+    var response;
+
+    awesom0.testMsg('AWESOM0 tell TestUser hello');
+    awesom0.testMsg('AWESOM0 notes');
+    response = awesom0.lastMsg();
+
+    expect(response).to.contain('hello');
   });
 });
