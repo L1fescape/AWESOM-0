@@ -18,7 +18,8 @@ module.exports = {
     'uptime',
     'urban',
     'youtube',
-    'osrc'
+    'osrc',
+    'version'
   ],
   debug : true,
   redis : false,

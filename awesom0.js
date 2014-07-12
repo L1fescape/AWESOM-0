@@ -61,6 +61,7 @@ module.exports = Awesom0 = {
   },
 
   start : function(){
+    var debug = this.debug;
     // create a new client
     if (this.debugREPL){
       // if we are debugging a script via repl, define our own say function and
@@ -69,7 +70,7 @@ module.exports = Awesom0 = {
       this.client = {
         say: function(channel, msg) {
           lastMsg = msg;
-          if (this.debug) {
+          if (debug) {
             console.log(chalk.green('Response (via ' + channel + '):'), msg);
           }
         },

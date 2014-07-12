@@ -20,6 +20,7 @@ if ('undefined' !== typeof process.argv[2]) {
 try {
     global[name] = require('./awesom0');
     settings.debugREPL = true;
+    settings.debug = true;
     global[name].init(settings);
 
     console.log('To see the current settings, simply type AWESOM-0\'s name, \'' + name + '\'');

@@ -21,7 +21,7 @@ var settings = {
   debug: true,
   debugREPL: true,
   redis: false,
-  botname: 'AWESOM0'
+  botname: 'AWESOM-0'
 };
 
 describe('AWESOM0', function (){
@@ -38,7 +38,7 @@ describe('AWESOM0', function (){
 
   it('can say hi back without crashing', function () {
     var response;
-    awesom0.testMsg('AWESOM0 hi!');
+    awesom0.testMsg('AWESOM-0 hi!');
     response = awesom0.lastMsg();
 
     expect(response).to.contain('TestUser');
@@ -47,8 +47,8 @@ describe('AWESOM0', function (){
   it('can store a note and retreive a note for a given user', function () {
     var response;
 
-    awesom0.testMsg('AWESOM0 tell TestUser hello');
-    awesom0.testMsg('AWESOM0 notes');
+    awesom0.testMsg('AWESOM-0 tell TestUser hello');
+    awesom0.testMsg('AWESOM-0 notes');
     response = awesom0.lastMsg();
 
     expect(response).to.contain('hello');
