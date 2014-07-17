@@ -36,7 +36,7 @@ describe('AWESOM0', function (){
     awesom0.init(settings);
   });
 
-  it('can say hi back without crashing', function () {
+  it('can say hi back', function () {
     var response;
     awesom0.testMsg('AWESOM-0 hi!');
     response = awesom0.lastMsg();
@@ -52,5 +52,16 @@ describe('AWESOM0', function (){
     response = awesom0.lastMsg();
 
     expect(response).to.contain('hello');
+  });
+
+  it('can list the rules', function () {
+    var response;
+
+    awesom0.testMsg('AWESOM-0 what are the rules');
+    response = awesom0.lastMsg();
+
+    expect(response).to.contain('may not injure a human being');
+    expect(response).to.contain('must obey any orders given to it by human beings');
+    expect(response).to.contain('protect its own existence');
   });
 });

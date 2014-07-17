@@ -19,7 +19,7 @@ var ackbars = [
   'http://fashionablygeek.com/wp-content/uploads/2010/02/its-a-mouse-trap.jpg?cb5e28',
   'http://31.media.tumblr.com/tumblr_lmn8d1xFXN1qjs7yio1_500.jpg',
   'http://i.imgur.com/EFJlvqh.png'
-]
+];
 
 var tarps = [
   'http://i.imgur.com/Sv2OYGU.gif',
