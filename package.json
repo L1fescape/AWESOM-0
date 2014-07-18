@@ -6,8 +6,12 @@
   "scripts": {
     "preinstall": "if [ ! -f ./settings.js ]; then cp settings.js.sample settings.js; fi"
   },
-  "author": "Andrew Kennedy",
+  "author": "Andrew Kennedy <andrew@akenn.org>",
+  "repository": "akenn/AWESOM-0",
   "license": "MIT",
+  "engines": {
+    "node": ">= 0.10.0"
+  },
   "dependencies": {
     "irc": "~0.3.6",
     "request": "~2.27.0",
