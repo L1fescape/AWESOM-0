@@ -4,7 +4,7 @@
   "description": "An IRC bot that responds to custom user scripts.",
   "main": "awesom0.js",
   "scripts": {
-    "preinstall": "cp settings.js.sample settings.js"
+    "preinstall": "if [ ! -f ./settings.js ]; then cp settings.js.sample settings.js; fi"
   },
   "author": "Andrew Kennedy",
   "license": "MIT",
