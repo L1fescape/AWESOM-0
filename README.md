@@ -112,7 +112,7 @@ $ node debug.js
 
 ## Issues or Questions
 
-If there's a feature you'd like supported or a bug in the code, create an [issue on GitHub](https://github.com/L1fescape/AWESOM-0/issues). If you have any questions, join us on IRC. We're at `#AWESOM-0` on Freenode.
+If there's a feature you'd like supported or a bug in the code, create an [issue on GitHub](https://github.com/L1fescape/AWESOM-0/issues).
 
 ## Acknowledgements
 
